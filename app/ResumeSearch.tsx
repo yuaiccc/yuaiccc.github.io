@@ -21,6 +21,62 @@ const MIN_QUERY_LEN: Record<ResumeLanguage, number> = { en: 2, zh: 1 };
 // Same reasoning for the summary preview line.
 const CONTENT_TRUNCATE: Record<ResumeLanguage, number> = { en: 180, zh: 90 };
 
+// ---- Typewriter placeholder ----
+const TYPEWRITER_EXAMPLES: Record<ResumeLanguage, string[]> = {
+  en: ['RAG evaluation', 'Go agent', 'memory system', 'LangGraph', 'SwiftUI', 'OCR'],
+  zh: ['RAG 评测', '飞书机器人', '记忆系统', 'LangGraph', '灵动岛', '混合检索'],
+};
+
+function useTypewriter(lang: ResumeLanguage, active: boolean): string {
+  const [text, setText] = useState('');
+  const stateRef = useRef({ idx: 0, char: 0, deleting: false, timer: null as ReturnType<typeof setTimeout> | null });
+
+  useEffect(() => {
+    const st = stateRef.current;
+    // Reset when language changes
+    st.idx = 0; st.char = 0; st.deleting = false;
+    setText('');
+    if (st.timer) clearTimeout(st.timer);
+
+    if (!active) return;
+
+    const examples = TYPEWRITER_EXAMPLES[lang];
+    const TYPE_SPEED = 90;
+    const DELETE_SPEED = 45;
+    const PAUSE_END = 1800;
+    const PAUSE_START = 600;
+
+    function tick() {
+      const word = examples[st.idx % examples.length];
+      if (!st.deleting) {
+        st.char++;
+        setText(word.slice(0, st.char));
+        if (st.char >= word.length) {
+          st.deleting = true;
+          st.timer = setTimeout(tick, PAUSE_END);
+          return;
+        }
+        st.timer = setTimeout(tick, TYPE_SPEED);
+      } else {
+        st.char--;
+        setText(word.slice(0, st.char));
+        if (st.char <= 0) {
+          st.deleting = false;
+          st.idx++;
+          st.timer = setTimeout(tick, PAUSE_START);
+          return;
+        }
+        st.timer = setTimeout(tick, DELETE_SPEED);
+      }
+    }
+
+    st.timer = setTimeout(tick, PAUSE_START);
+    return () => { if (st.timer) clearTimeout(st.timer); };
+  }, [lang, active]);
+
+  return text;
+}
+
 const CATEGORY_STYLES: Record<string, string> = {
   'Selected Project': 'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
   'Open Source': 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
@@ -122,6 +178,8 @@ export default function ResumeSearch() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -129,6 +187,10 @@ export default function ResumeSearch() {
   // Client-side result cache keyed by `lang:query`. Re-typing or toggling back
   // to a seen query is instant with zero network. Complements the server LRU.
   const cacheRef = useRef<Map<string, SearchResult[]>>(new Map());
+
+  // Typewriter runs only when input is empty and unfocused
+  const typewriterActive = query.length === 0 && !focused;
+  const typewriterText = useTypewriter(language, typewriterActive);
 
   const runSearch = useCallback(async (q: string, lang: ResumeLanguage) => {
     abortRef.current?.abort();
@@ -241,7 +303,7 @@ export default function ResumeSearch() {
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
         <div ref={containerRef} className="relative">
-          <div className="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:border-blue-400 dark:focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-400/20 dark:focus-within:ring-blue-500/20 transition-all">
+          <div className={`flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm focus-within:border-blue-400 dark:focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-400/20 dark:focus-within:ring-blue-500/20 transition-all ${!hasInteracted ? 'animate-[searchGlow_2.5s_ease-in-out_2]' : ''}`}>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -253,22 +315,39 @@ export default function ResumeSearch() {
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
-            <input
-              ref={inputRef}
-              type="search"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setOpen(true);
-              }}
-              onFocus={() => setOpen(true)}
-              placeholder={t.placeholder}
-              aria-label={t.ariaLabel}
-              lang={language === 'zh' ? 'zh-CN' : 'en'}
-              className="flex-1 bg-transparent py-2 pr-2 text-sm text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none"
-              spellCheck={false}
-              autoComplete="off"
-            />
+            <div className="relative flex-1">
+              <input
+                ref={inputRef}
+                type="search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setOpen(true);
+                }}
+                onFocus={() => { setOpen(true); setFocused(true); setHasInteracted(true); }}
+                onBlur={() => setFocused(false)}
+                placeholder=""
+                aria-label={t.ariaLabel}
+                lang={language === 'zh' ? 'zh-CN' : 'en'}
+                className="w-full bg-transparent py-2 pr-2 text-sm text-slate-800 dark:text-slate-100 focus:outline-none"
+                spellCheck={false}
+                autoComplete="off"
+              />
+              {query.length === 0 && (
+                <span
+                  className="pointer-events-none absolute inset-0 flex items-center py-2 pr-2 text-sm text-slate-400 dark:text-slate-500"
+                  aria-hidden="true"
+                >
+                  {focused ? t.placeholder : (
+                    <>
+                      <span>{language === 'zh' ? '试试搜 ' : 'Try '}</span>
+                      <span className="text-slate-500 dark:text-slate-400 font-medium">{typewriterText}</span>
+                      <span className="ml-px inline-block w-px h-3.5 bg-slate-400 dark:bg-slate-500 animate-[cursorBlink_1s_step-end_infinite]" />
+                    </>
+                  )}
+                </span>
+              )}
+            </div>
             <kbd className="mr-3 hidden sm:inline-flex items-center gap-1 rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-1.5 py-0.5 text-[10px] font-mono text-slate-500 dark:text-slate-400">
               ⌘K
             </kbd>
