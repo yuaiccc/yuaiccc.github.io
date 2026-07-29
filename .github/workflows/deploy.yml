@@ -36,6 +36,7 @@ jobs:
       - name: Build static export
         run: npm run build
         env:
+          STATIC_EXPORT: '1'
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
 
       - name: Setup Pages
