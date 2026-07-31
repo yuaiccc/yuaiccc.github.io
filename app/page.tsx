@@ -30,8 +30,6 @@ const INLINE_TECH: Record<string, TechItem> = {
   SQLite: { name: 'sqlite-vec', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg' },
   Go: { name: 'Go', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg' },
   Python: { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
-  SwiftUI: { name: 'SwiftUI', icon: 'https://cdn.simpleicons.org/swift/F05138' },
-  LightRAG: { name: 'LightRAG', icon: 'https://cdn.simpleicons.org/langchain/1C3C3C', invertDark: true },
   RAGAS: { name: 'RAGAS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
   React: { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
   Vue: { name: 'Vue', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg' },
@@ -181,6 +179,53 @@ const CnFlag = ({ className = FLAG_BASE }: IconProps) => (
   </svg>
 );
 
+const EducationSection = ({ zh }: { zh: boolean }) => (
+  <section className="animate-fade-in-up delay-400">
+    <h2 className="mb-4 border-l-[3px] border-blue-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '教育经历' : 'Education'}</h2>
+    <div className="divide-y divide-slate-200 dark:divide-slate-700">
+      <div className="px-1 py-5 sm:px-5">
+        <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/hdu-logo.svg" alt="Hangzhou Dianzi University logo" className="h-5 w-auto" />
+            </span>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+              {zh ? '杭州电子科技大学' : 'Hangzhou Dianzi University'}
+              <span className="mt-0.5 block text-sm font-medium text-slate-500 dark:text-slate-400">{zh ? 'Hangzhou Dianzi University（HDU）' : '杭州电子科技大学（HDU）'}</span>
+            </h3>
+          </div>
+          <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2026.09 -（预计）' : 'Sep 2026 - (expected)'}</span>
+        </div>
+        <p className="mb-2 text-gray-700 dark:text-gray-300">{zh ? '硕士研究生（拟入学）' : 'Postgraduate (Incoming)'}</p>
+      </div>
+
+      <div className="px-1 py-5 sm:px-5">
+        <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ncwu-logo.png" alt="NCWU logo" className="h-5 w-auto" />
+            </span>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+              {zh ? '华北水利水电大学' : 'North China University of Water Resources and Electric Power'}
+              <span className="mt-0.5 block text-sm font-medium text-slate-500 dark:text-slate-400">{zh ? 'North China University of Water Resources and Electric Power（NCWU）' : '华北水利水电大学（NCWU）'}</span>
+            </h3>
+          </div>
+          <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2022.09 - 2026.06' : 'Sep 2022 - Jun 2026'}</span>
+        </div>
+        <p className="mb-2 text-gray-700 dark:text-gray-300">{zh ? '人工智能工学学士' : 'B.Eng. in Artificial Intelligence'} / <span className="font-medium text-blue-500">{zh ? '专业前 30%' : 'Top 30% in major'}</span></p>
+        <p className="inline-block rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+          {zh ? '学业优秀奖学金' : 'Academic Excellence Scholarship'}
+        </p>
+        <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+          <span className="font-medium">{zh ? '核心课程：' : 'Core coursework:'}</span> {zh ? '操作系统、数据结构、线性代数、自然语言处理、深度学习、计算机网络、软件工程' : 'Operating Systems, Data Structures, Linear Algebra, Natural Language Processing, Deep Learning, Computer Networks, and Software Engineering'}
+        </p>
+      </div>
+    </div>
+  </section>
+);
+
 export default function Resume() {
   const language = useResumeLanguage();
   const zh = language === 'zh';
@@ -260,7 +305,7 @@ export default function Resume() {
             </div>
 
             <section className="animate-fade-in-up delay-100">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '精选项目' : 'Selected Projects'}</h2>
+              <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '项目' : 'Projects'}</h2>
 
               <div className="group mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2 gap-2">
@@ -284,15 +329,11 @@ export default function Resume() {
                   <InlineTech tech="Feishu" />
                   <span aria-hidden="true">+</span>
                   <InlineTech tech="Go" />
-                  <span aria-hidden="true">+</span>
-                  <InlineTech tech="SwiftUI" />
-                  <span aria-hidden="true">+</span>
-                  <InlineTech tech="LightRAG" />
                 </p>
                 <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">智能体运行时：</span>基于飞书 WebSocket 长连接和 CardKit 流式 API 构建 <span className="font-semibold text-slate-900 dark:text-slate-200">Go</span> 服务；普通对话走快速路径，复杂请求由上下文 Planner 按需编排记忆、文档、GitHub、搜索和本机工具。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Agent runtime:</span> Built a <span className="font-semibold text-slate-900 dark:text-slate-200">Go</span> service over Feishu&apos;s persistent WebSocket channel and CardKit streaming API; a fast path handles ordinary chat while a context Planner orchestrates memory, documents, GitHub, search, and local tools for complex requests.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">分层记忆与 RAG：</span>将短期会话、本地 JSON 长期事实、聊天与图片归档分层管理；通过 <InlineTech tech="LightRAG" /> 构建独立的文档图谱/向量检索链路，并对上下文进行预算控制与隐私脱敏。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Layered memory and RAG:</span> Separated short-term session state, local JSON long-term facts, and chat/image archives; built an independent <InlineTech tech="LightRAG" /> document graph and vector-retrieval path with context-budget controls and privacy redaction.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态与可见性：</span>集成 Apple Vision 本地 OCR、飞书 OCR 降级和本地视觉模型；基于 SHA-256 内容寻址媒体库实现消息幂等、权限隔离、资产修复与图片记忆召回，并用 <InlineTech tech="SwiftUI" /> 灵动岛呈现 Agent 阶段状态。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal and observable:</span> Integrated local Apple Vision OCR, Feishu OCR fallback, and local vision models; a SHA-256 content-addressed media vault provides message idempotency, permission isolation, repair tooling, and image-memory recall, while a <InlineTech tech="SwiftUI" /> dynamic-island UI surfaces agent stages.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">分层记忆与 RAG：</span>将短期会话、本地 JSON 长期事实、聊天与图片归档分层管理；接入 LightRAG 构建独立的文档图谱/向量检索链路，并对上下文进行预算控制与隐私脱敏。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Layered memory and RAG:</span> Separated short-term session state, local JSON long-term facts, and chat/image archives; integrated LightRAG for an independent document graph and vector-retrieval path with context-budget controls and privacy redaction.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态与可见性：</span>集成 Apple Vision 本地 OCR、飞书 OCR 降级和本地视觉模型；基于 SHA-256 内容寻址媒体库实现消息幂等、权限隔离、资产修复与图片记忆召回，并在 macOS 菜单栏展示 Agent 阶段状态。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal and observable:</span> Integrated local Apple Vision OCR, Feishu OCR fallback, and local vision models; a SHA-256 content-addressed media vault provides message idempotency, permission isolation, repair tooling, image-memory recall, and macOS menu-bar agent-status visibility.</>}</li>
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可靠性：</span>为长驻 Agent 设计时效与成员校验、后台记忆整理、分阶段延迟日志、健康检查与降级路径；LightRAG、CardKit、OCR 或外部 Agent 不可用时回退到本地能力。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reliability:</span> Added event-age and membership checks, background memory consolidation, phased latency logs, health checks, and graceful degradation; unavailable LightRAG, CardKit, OCR, or external-agent services fall back to local paths.</>}</li>
                 </ul>
               </div>
@@ -356,50 +397,33 @@ export default function Resume() {
               <div className="group rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2">
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors flex items-center gap-2 flex-wrap">
-                    <span>{zh ? 'ArkLab — RAG 评测与失败诊断工作台' : 'ArkLab — RAG Evaluation & Failure-Diagnosis Workbench'}</span>
-                    <a href="https://github.com/yuaiccc/ArkLab" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-2 py-0.5 rounded-md transition-colors" aria-label={zh ? '在 GitHub 查看 ArkLab' : 'View ArkLab on GitHub'}>
+                    <span>{zh ? 'LaboRBench — 中文劳动争议推理评测工具' : 'LaboRBench — Chinese Labor-Dispute Reasoning Evaluation'}</span>
+                    <a href="https://github.com/yuaiccc/laborbench-research" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-2 py-0.5 rounded-md transition-colors" aria-label={zh ? '在 GitHub 查看 LaboRBench' : 'View LaboRBench on GitHub'}>
                       <GithubIcon className="w-3.5 h-3.5" />
-                      <span>yuaiccc/ArkLab</span>
+                      <span>yuaiccc/laborbench-research</span>
                     </a>
                   </h3>
                   <span className="mt-2 self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400 sm:mt-0">{zh ? '2026.07 - 至今' : 'Jul 2026 - Present'}</span>
                 </div>
                 <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  {zh ? '个人项目' : 'Independent Project'} | <InlineTech tech="Python" /> + <InlineTech tech="RAGAS" /> + <InlineTech tech="SQLite" />
+                  {zh ? '研究项目' : 'Research Project'} | <InlineTech tech="Python" /> + LLM Evaluation + Reproducible Research
                 </p>
                 <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">评测编排：</span>构建 CLI 优先的 RAG 实验链路，覆盖文档进入、检索、重排、生成、评测和报告；支持本地 smoke test、方舟模型/embedding、BM25、稠密和混合检索。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Evaluation orchestration:</span> Built a CLI-first RAG experiment pipeline spanning ingestion, retrieval, reranking, generation, evaluation, and reports, with local smoke tests, Ark models/embeddings, and BM25, dense, and hybrid retrieval.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可复现诊断：</span>统一记录 Recall@K、MRR、NDCG、faithfulness、拒答率和 false-answer rate，并生成 JSONL trace、失败池、逐例 Markdown 诊断、成本统计与实验登记表。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reproducible diagnosis:</span> Captures Recall@K, MRR, NDCG, faithfulness, abstention, and false-answer rates alongside JSONL traces, failure pools, per-case Markdown diagnoses, cost accounting, and experiment records.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">回归闭环：</span>将失败样本提升为回归集，对比 baseline 与 candidate 的修复与退化；支持 recipe matrix 消融、公开 benchmark 导入，以及对 KotobaFlow 等真实业务 RAG API 的外部评测。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Regression loop:</span> Promotes failures into regression sets and compares baseline with candidate fixes and regressions; supports recipe-matrix ablations, public benchmark imports, and external evaluation of real RAG APIs such as KotobaFlow.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">数据与证据：</span>面向中文劳动争议判决构建来源可追溯的 claim 级标注；发布去标识化标注与 source offsets，原始裁判文书仅保留在本地忽略目录。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Data and provenance:</span> Built source-grounded, claim-level annotations for Chinese labor-dispute judgments, releasing de-identified labels and source offsets while keeping judgment text in ignored local directories.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">评测边界：</span>将前瞻预测与结果泄漏分离，记录每条银标注的来源、分歧、模型调用与冻结数据哈希；明确其衡量的是与已公开裁判结果的对应性，而非裁判正确性。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Evaluation boundary:</span> Separates prospective prediction from outcome leakage and records every silver-label source, disagreement, model call, and frozen dataset hash; it measures correspondence to published judgments rather than legal correctness.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可复现实验：</span>实现 collection、annotation、adjudication、evaluation、statistics 与 paper-building CLI；运行可恢复，失败请求独立写入 JSONL，支持质量 notebook 与 release validation。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reproducible experiments:</span> Implemented collection, annotation, adjudication, evaluation, statistics, and paper-building CLIs; runs are resumable, failed requests are isolated to JSONL, and the repository includes a quality notebook and release validation.</>}</li>
                 </ul>
               </div>
             </section>
 
-            <OpenSourceProjects />
+            <EducationSection zh={zh} />
 
-            <section className="animate-fade-in-up delay-200">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '亮点' : 'Highlights'}</h2>
-              <div>
-                <div className="rounded-lg border border-slate-200 bg-slate-50/70 p-5 dark:border-slate-700 dark:bg-slate-800/40">
-                  <h3 className="mb-2 font-bold text-slate-900 dark:text-slate-100">{zh ? '语言能力' : 'Languages'}</h3>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                    <CnFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '普通话' : 'Mandarin Chinese'}</span>{zh ? '：母语。' : ': native.'}<br />
-                    <GbFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '英语 CET-6' : 'English CET-6'}</span>{zh ? '：可用于日常协作和技术讨论。' : ': comfortable using English in day-to-day collaboration and technical discussions.'}<br />
-                    <JpFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">日本語 JLPT N3</span>：基礎的な技術資料を読み、日本向けの開発環境に適応できます。
-                  </p>
-                </div>
-              </div>
-            </section>
+            <OpenSourceProjects />
 
             <section className="animate-fade-in-up delay-300">
               <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '技术栈' : 'Tech Stack'}</h2>
               <div className="space-y-4 rounded-lg border border-gray-200 bg-slate-50 p-5 dark:border-gray-800 dark:bg-slate-900">
-                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                  {zh
-                    ? '熟练使用 Claude Code、OpenAI Codex 等 Coding Agent，能够完成代码库接手、跨模块实现、测试调试与 Git 交付。'
-                    : 'Proficient with coding agents including Claude Code and OpenAI Codex for codebase onboarding, cross-module implementation, testing, debugging, and Git delivery.'}
-                </p>
                 {TECH_GROUPS.map((group) => (
                   <div key={group.title} className="space-y-3">
                     <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-[0.14em] font-mono">
@@ -416,47 +440,11 @@ export default function Resume() {
             </section>
 
             <section className="animate-fade-in-up delay-400">
-              <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '教育经历' : 'Education'}</h2>
-              <div className="divide-y divide-slate-200 dark:divide-slate-700">
-                <div className="px-1 py-5 sm:px-5">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-2 gap-2">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/hdu-logo.svg" alt="Hangzhou Dianzi University logo" className="h-5 w-auto" />
-                      </span>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                        {zh ? '杭州电子科技大学' : 'Hangzhou Dianzi University'}
-                        <span className="block text-sm font-medium text-slate-500 dark:text-slate-400 mt-0.5">{zh ? 'Hangzhou Dianzi University（HDU）' : '杭州电子科技大学（HDU）'}</span>
-                      </h3>
-                    </div>
-                    <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2026.09 -（预计）' : 'Sep 2026 - (expected)'}</span>
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">{zh ? '硕士研究生（拟入学）' : 'Postgraduate (Incoming)'}</p>
-                </div>
-
-                <div className="px-1 py-5 sm:px-5">
-                  <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-2 gap-2">
-                    <div className="flex items-center gap-3">
-                      <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="/ncwu-logo.png" alt="NCWU logo" className="h-5 w-auto" />
-                      </span>
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                        {zh ? '华北水利水电大学' : 'North China University of Water Resources and Electric Power'}
-                        <span className="block text-sm font-medium text-slate-500 dark:text-slate-400 mt-0.5">{zh ? 'North China University of Water Resources and Electric Power（NCWU）' : '华北水利水电大学（NCWU）'}</span>
-                      </h3>
-                    </div>
-                    <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2022.09 - 2026.06' : 'Sep 2022 - Jun 2026'}</span>
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">{zh ? '人工智能工学学士' : 'B.Eng. in Artificial Intelligence'} / <span className="font-medium text-blue-500">GPA: 3.16</span></p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 inline-block px-3 py-1 rounded-full border border-blue-100 dark:border-blue-800">
-                    {zh ? '学业优秀奖学金' : 'Academic Excellence Scholarship'}
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-3">
-                    <span className="font-medium">{zh ? '核心课程：' : 'Core coursework:'}</span> {zh ? '操作系统、数据结构、线性代数、自然语言处理、深度学习、计算机网络、软件工程' : 'Operating Systems, Data Structures, Linear Algebra, Natural Language Processing, Deep Learning, Computer Networks, and Software Engineering'}
-                  </p>
-                </div>
+              <h2 className="mb-4 border-l-[3px] border-blue-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '语言能力' : 'Languages'}</h2>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-700 dark:text-gray-300">
+                <span><CnFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '普通话' : 'Mandarin Chinese'}</span>{zh ? '：母语。' : ': native.'}</span>
+                <span><GbFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '英语 CET-6' : 'English CET-6'}</span>{zh ? '：可用于日常协作和技术讨论。' : ': comfortable using English in day-to-day collaboration and technical discussions.'}</span>
+                <span><JpFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">日本語 JLPT N3</span>：基礎的な技術資料を読み、日本向けの開発環境に適応できます。</span>
               </div>
             </section>
 
