@@ -10,10 +10,9 @@
 
 ## 精选项目
 
-- 飞书叶（Feishuye）：基于 Go、飞书开放平台、OceanBase 混合检索与多模态记忆的上下文感知智能体。
+- 飞书叶（Feishuye）：基于 Go、飞书长连接、LightRAG 与本地多模态能力的可自行部署 AI Agent。
 - KotobaFlow：集 LangGraph 工作流、混合 RAG、长期用户记忆与在线部署于一体的日语学习智能体。
-- StockFlow：基于 Spring Boot、MySQL、Redis 与 Docker Compose 的电商库存服务工程化练习。
-- ArkLab：面向检索指标、失败诊断、轨迹分析与回归测试的 RAG 评测工作台。
+- ArkLab：将指标、轨迹、失败归因和回归集串为闭环的 CLI-first RAG 评测工作台。
 
 ## 本地开发
 

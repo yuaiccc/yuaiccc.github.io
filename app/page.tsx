@@ -29,6 +29,10 @@ const INLINE_TECH: Record<string, TechItem> = {
   PostgreSQL: { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
   SQLite: { name: 'sqlite-vec', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg' },
   Go: { name: 'Go', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg' },
+  Python: { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
+  SwiftUI: { name: 'SwiftUI', icon: 'https://cdn.simpleicons.org/swift/F05138' },
+  LightRAG: { name: 'LightRAG', icon: 'https://cdn.simpleicons.org/langchain/1C3C3C', invertDark: true },
+  RAGAS: { name: 'RAGAS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
   React: { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
   Vue: { name: 'Vue', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg' },
   Express: { name: 'Express', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg', invertDark: true },
@@ -247,7 +251,7 @@ export default function Resume() {
               <div className="group mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2 gap-2">
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors flex items-center gap-2 flex-wrap">
-                    <span>{zh ? '飞书叶 — 上下文感知多模态记忆智能体' : 'Feishuye — Context-Aware Multimodal Memory Agent'}</span>
+                    <span>{zh ? '飞书叶 — 本地优先的飞书 AI Agent' : 'Feishuye — Local-First Feishu AI Agent'}</span>
                     <a
                       href="https://github.com/yuaiccc/feishu-companion-bot"
                       target="_blank"
@@ -267,15 +271,15 @@ export default function Resume() {
                   <span aria-hidden="true">+</span>
                   <InlineTech tech="Go" />
                   <span aria-hidden="true">+</span>
-                  <InlineTech tech="React" />
+                  <InlineTech tech="SwiftUI" />
                   <span aria-hidden="true">+</span>
-                  <InlineTech tech="OceanBase" />
+                  <InlineTech tech="LightRAG" />
                 </p>
                 <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">智能体运行时：</span>基于飞书 WebSocket 事件通道与 CardKit 流式 API 构建 <span className="font-semibold text-slate-900 dark:text-slate-200">飞书叶</span> <InlineTech tech="Go" /> 服务；由 LLM 上下文 Planner 在无关键词路由的情况下决定是否回复、调用哪些工具与记忆、Top-K、近期消息深度及上下文预算。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Agent runtime:</span> Built <span className="font-semibold text-slate-900 dark:text-slate-200">Feishuye</span>, a <InlineTech tech="Go" /> service over Feishu&apos;s WebSocket event channel and CardKit streaming API; an LLM context Planner decides whether to reply, which tools and memories to use, Top-K, recent-message depth, and context budget without keyword routing.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">Agentic 记忆：</span>融合 <InlineTech tech="OceanBase" /> 全文检索与 <span className="font-semibold text-slate-900 dark:text-slate-200">1,024 维</span>本地向量，通过加权 RRF 检索分层人物、情景与语义记忆，并加入时序对齐、GraphRAG 关系和可见性过滤，接入 <span className="font-bold text-blue-600 dark:text-blue-400">1,600+ 条聊天与媒体记录</span>。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Agentic memory:</span> Integrated <InlineTech tech="OceanBase" /> full-text search and <span className="font-semibold text-slate-900 dark:text-slate-200">1,024-dimensional</span> local embeddings with weighted RRF, layered profile/episodic/semantic memory, temporal alignment, GraphRAG relations, and visibility filtering across <span className="font-bold text-blue-600 dark:text-blue-400">1,600+ chat and media records</span>.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态链路：</span>实现 Apple Vision 本地 OCR、飞书 OCR 兜底与本地 VLM 并行理解；设计基于 SHA-256 的内容寻址媒体库，支持消息级幂等、权限隔离、资产修复和图片记忆召回。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal pipeline:</span> Added local Apple Vision OCR with Feishu fallback, parallel local VLM understanding, and a SHA-256 content-addressed media vault with message-level idempotency, permission isolation, repair tooling, and image-memory recall.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">质量与运维：</span>将 OceanBase 官方 SeekDB Skill 的结构探查、批量导入、混合查询与结果验证流程纳入运维工具链；3 条核心回归用例达到 <span className="font-bold text-blue-600 dark:text-blue-400">Hit@K 100%</span>、<span className="font-bold text-blue-600 dark:text-blue-400">MRR 0.833</span> 且隐私违规为 0，并接入健康检查、分阶段延迟追踪、竞态测试与 CI。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Quality and operations:</span> Incorporated the official OceanBase SeekDB Skill workflow for schema inspection, batch import, hybrid querying, and result verification; the 3-case core suite reached <span className="font-bold text-blue-600 dark:text-blue-400">Hit@K 100%</span> and <span className="font-bold text-blue-600 dark:text-blue-400">MRR 0.833</span> with zero privacy violations, alongside health checks, phased latency tracing, race tests, and CI.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">智能体运行时：</span>基于飞书 WebSocket 长连接和 CardKit 流式 API 构建 <span className="font-semibold text-slate-900 dark:text-slate-200">Go</span> 服务；普通对话走快速路径，复杂请求由上下文 Planner 按需编排记忆、文档、GitHub、搜索和本机工具。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Agent runtime:</span> Built a <span className="font-semibold text-slate-900 dark:text-slate-200">Go</span> service over Feishu&apos;s persistent WebSocket channel and CardKit streaming API; a fast path handles ordinary chat while a context Planner orchestrates memory, documents, GitHub, search, and local tools for complex requests.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">分层记忆与 RAG：</span>将短期会话、本地 JSON 长期事实、聊天与图片归档分层管理；通过 <InlineTech tech="LightRAG" /> 构建独立的文档图谱/向量检索链路，并对上下文进行预算控制与隐私脱敏。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Layered memory and RAG:</span> Separated short-term session state, local JSON long-term facts, and chat/image archives; built an independent <InlineTech tech="LightRAG" /> document graph and vector-retrieval path with context-budget controls and privacy redaction.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态与可见性：</span>集成 Apple Vision 本地 OCR、飞书 OCR 降级和本地视觉模型；基于 SHA-256 内容寻址媒体库实现消息幂等、权限隔离、资产修复与图片记忆召回，并用 <InlineTech tech="SwiftUI" /> 灵动岛呈现 Agent 阶段状态。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal and observable:</span> Integrated local Apple Vision OCR, Feishu OCR fallback, and local vision models; a SHA-256 content-addressed media vault provides message idempotency, permission isolation, repair tooling, and image-memory recall, while a <InlineTech tech="SwiftUI" /> dynamic-island UI surfaces agent stages.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可靠性：</span>为长驻 Agent 设计时效与成员校验、后台记忆整理、分阶段延迟日志、健康检查与降级路径；LightRAG、CardKit、OCR 或外部 Agent 不可用时回退到本地能力。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reliability:</span> Added event-age and membership checks, background memory consolidation, phased latency logs, health checks, and graceful degradation; unavailable LightRAG, CardKit, OCR, or external-agent services fall back to local paths.</>}</li>
                 </ul>
               </div>
 
@@ -337,17 +341,23 @@ export default function Resume() {
 
               <div className="group rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2">
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors">{zh ? 'StockFlow — 电商库存服务' : 'StockFlow — E-commerce Inventory Service'}</h3>
-                  <span className="mt-2 self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400 sm:mt-0">{zh ? '2026.01' : 'Jan 2026'}</span>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors flex items-center gap-2 flex-wrap">
+                    <span>{zh ? 'ArkLab — RAG 评测与失败诊断工作台' : 'ArkLab — RAG Evaluation & Failure-Diagnosis Workbench'}</span>
+                    <a href="https://github.com/yuaiccc/ArkLab" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-2 py-0.5 rounded-md transition-colors" aria-label={zh ? '在 GitHub 查看 ArkLab' : 'View ArkLab on GitHub'}>
+                      <GithubIcon className="w-3.5 h-3.5" />
+                      <span>yuaiccc/ArkLab</span>
+                    </a>
+                  </h3>
+                  <span className="mt-2 self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400 sm:mt-0">{zh ? '2026.07 - 至今' : 'Jul 2026 - Present'}</span>
                 </div>
                 <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  {zh ? '后端工程化练习' : 'Backend Engineering Project'} | <InlineTech tech="Spring" /> + <InlineTech tech="MySQL" /> + <InlineTech tech="Redis" />
+                  {zh ? '个人项目' : 'Independent Project'} | <InlineTech tech="Python" /> + <InlineTech tech="RAGAS" /> + <InlineTech tech="SQLite" />
                 </p>
                 <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">领域建模：</span>以 SKU 与仓库组成联合主键，使用 Spring Data JPA 持久化库存，并提供查询、扣减等 RESTful API。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Domain model:</span> Modeled inventory with a composite SKU-and-warehouse key, persisted stock through Spring Data JPA, and exposed RESTful query and deduction APIs.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">缓存与并发：</span>使用 Redis cache-aside 降低库存读取开销，并为库存扣减加入带过期时间的互斥控制与库存不足保护。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Caching and concurrency:</span> Applied Redis cache-aside to reduce inventory read cost and added expiring mutual exclusion plus insufficient-stock protection around deductions.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">本地交付：</span>通过 Docker Compose 编排 Spring Boot、MySQL 与 Redis，统一开发环境和依赖启动方式。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Local delivery:</span> Used Docker Compose to orchestrate Spring Boot, MySQL, and Redis with a reproducible development environment.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">评测编排：</span>构建 CLI 优先的 RAG 实验链路，覆盖文档进入、检索、重排、生成、评测和报告；支持本地 smoke test、方舟模型/embedding、BM25、稠密和混合检索。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Evaluation orchestration:</span> Built a CLI-first RAG experiment pipeline spanning ingestion, retrieval, reranking, generation, evaluation, and reports, with local smoke tests, Ark models/embeddings, and BM25, dense, and hybrid retrieval.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可复现诊断：</span>统一记录 Recall@K、MRR、NDCG、faithfulness、拒答率和 false-answer rate，并生成 JSONL trace、失败池、逐例 Markdown 诊断、成本统计与实验登记表。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reproducible diagnosis:</span> Captures Recall@K, MRR, NDCG, faithfulness, abstention, and false-answer rates alongside JSONL traces, failure pools, per-case Markdown diagnoses, cost accounting, and experiment records.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">回归闭环：</span>将失败样本提升为回归集，对比 baseline 与 candidate 的修复与退化；支持 recipe matrix 消融、公开 benchmark 导入，以及对 KotobaFlow 等真实业务 RAG API 的外部评测。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Regression loop:</span> Promotes failures into regression sets and compares baseline with candidate fixes and regressions; supports recipe-matrix ablations, public benchmark imports, and external evaluation of real RAG APIs such as KotobaFlow.</>}</li>
                 </ul>
               </div>
             </section>

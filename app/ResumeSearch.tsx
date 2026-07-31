@@ -28,14 +28,13 @@ const TYPEWRITER_EXAMPLES: Record<ResumeLanguage, string[]> = {
 };
 
 function useTypewriter(lang: ResumeLanguage, active: boolean): string {
-  const [text, setText] = useState('');
+  const [display, setDisplay] = useState({ lang, text: '' });
   const stateRef = useRef({ idx: 0, char: 0, deleting: false, timer: null as ReturnType<typeof setTimeout> | null });
 
   useEffect(() => {
     const st = stateRef.current;
     // Reset when language changes
     st.idx = 0; st.char = 0; st.deleting = false;
-    setText('');
     if (st.timer) clearTimeout(st.timer);
 
     if (!active) return;
@@ -50,7 +49,7 @@ function useTypewriter(lang: ResumeLanguage, active: boolean): string {
       const word = examples[st.idx % examples.length];
       if (!st.deleting) {
         st.char++;
-        setText(word.slice(0, st.char));
+        setDisplay({ lang, text: word.slice(0, st.char) });
         if (st.char >= word.length) {
           st.deleting = true;
           st.timer = setTimeout(tick, PAUSE_END);
@@ -59,7 +58,7 @@ function useTypewriter(lang: ResumeLanguage, active: boolean): string {
         st.timer = setTimeout(tick, TYPE_SPEED);
       } else {
         st.char--;
-        setText(word.slice(0, st.char));
+        setDisplay({ lang, text: word.slice(0, st.char) });
         if (st.char <= 0) {
           st.deleting = false;
           st.idx++;
@@ -74,7 +73,7 @@ function useTypewriter(lang: ResumeLanguage, active: boolean): string {
     return () => { if (st.timer) clearTimeout(st.timer); };
   }, [lang, active]);
 
-  return text;
+  return active && display.lang === lang ? display.text : '';
 }
 
 const CATEGORY_STYLES: Record<string, string> = {

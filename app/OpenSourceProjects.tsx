@@ -21,23 +21,6 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
-    id: 'arklab',
-    name: 'yuaiccc/ArkLab',
-    href: 'https://arklab.onrender.com',
-    summary: 'A local-first RAG evaluation workbench for orchestration, failure diagnosis, traces, and regression testing.',
-    summaryZh: '面向编排、失败诊断、轨迹分析和回归测试的本地优先 RAG 评测工作台。',
-    description:
-      'ArkLab is a CLI-first RAG evaluation and diagnosis system that turns benchmark runs into reproducible engineering evidence: retrieval metrics, LLM-as-Judge hooks, trace files, failure pools, experiment summaries, and regression eval sets. It can run public benchmarks such as MultiHop-RAG / EnterpriseRAG-Bench and evaluate real application targets like japanese-verb-master through API adapters.',
-    descriptionZh:
-      'ArkLab 是一个 CLI 优先的 RAG 评测与诊断系统，将 benchmark 运行转化为可复现的工程证据，包括检索指标、LLM-as-Judge 接口、轨迹文件、失败样本池、实验摘要和回归评测集。它既能运行 MultiHop-RAG、EnterpriseRAG-Bench 等公开基准，也能通过 API 适配器评测 japanese-verb-master 等真实应用。',
-    languageLabel: 'Python',
-    languageColor: '#3572A5',
-    metaLabel: 'Render Demo',
-    metaLabelZh: 'Render 演示',
-    ctaLabel: 'Open Web UI',
-    ctaLabelZh: '打开 Web 界面',
-  },
-  {
     id: 'sillytavern',
     name: 'SillyTavern/SillyTavern',
     href: 'https://github.com/SillyTavern/SillyTavern',
