@@ -207,10 +207,12 @@ export default function Resume() {
                   </h1>
                 </div>
               </div>
-              <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-gray-300 text-center md:text-right">
+              <div className="w-full rounded-lg border border-blue-200 bg-blue-50/70 p-3.5 text-center shadow-sm ring-1 ring-blue-100/70 sm:w-auto sm:min-w-64 md:text-right dark:border-blue-900/70 dark:bg-blue-950/25 dark:ring-blue-950/50">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Contact</p>
+                <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-gray-300">
                 <a
                   href="mailto:yuaiccc@aliyun.com"
-                  className="hover:text-slate-900 dark:hover:text-white transition inline-flex items-center justify-center md:justify-end gap-2"
+                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
                 >
                   <MailIcon />
                   <span>yuaiccc@aliyun.com</span>
@@ -219,7 +221,7 @@ export default function Resume() {
                   href="https://github.com/yuaiccc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-slate-900 dark:hover:text-white transition inline-flex items-center justify-center md:justify-end gap-2"
+                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
                 >
                   <GithubIcon />
                   <span>github.com/yuaiccc</span>
@@ -228,12 +230,13 @@ export default function Resume() {
                   href="https://x.com/Hakikeioak"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-slate-900 dark:hover:text-white transition inline-flex items-center justify-center md:justify-end gap-2"
+                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
                 >
                   <XIcon />
                   <span>x.com/Hakikeioak</span>
                 </a>
                 <FeishuContact />
+                </div>
               </div>
             </div>
           </header>
@@ -418,9 +421,6 @@ export default function Resume() {
                     <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2026.09 -（预计）' : 'Sep 2026 - (expected)'}</span>
                   </div>
                   <p className="text-gray-700 dark:text-gray-300 mb-2">{zh ? '硕士研究生（拟入学）' : 'Postgraduate (Incoming)'}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 inline-block px-3 py-1 rounded-full border border-amber-100 dark:border-amber-800">
-                    {zh ? '拟入学 · 2026 秋季' : 'Incoming · Fall 2026'}
-                  </p>
                 </div>
 
                 <div className="px-1 py-5 sm:px-5">
@@ -448,8 +448,24 @@ export default function Resume() {
               </div>
             </section>
 
-            <footer className="mt-8 pt-6 pb-2 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-400 space-y-4">
-              <p>© 2026 Xu Junshan.</p>
+            <footer className="mt-8 border-t border-gray-200 pt-6 pb-2 text-center text-sm text-gray-400 dark:border-gray-700">
+              <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                <span>© 2026 Xu Junshan (许君山)</span>
+                <span aria-hidden="true">|</span>
+                <span>Last updated: Jul. 2026.</span>
+                <span aria-hidden="true">|</span>
+                <a
+                  href="https://visitor-badge.laobi.icu/badge?page_id=xj3.tech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 transition hover:text-slate-600 dark:hover:text-slate-300"
+                  aria-label="Visitor number"
+                >
+                  <span>Visitor number:</span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="https://visitor-badge.laobi.icu/badge?page_id=xj3.tech" alt="Visit counter" className="h-5 w-auto" />
+                </a>
+              </p>
             </footer>
           </div>
         </div>

@@ -21,6 +21,21 @@ type Project = {
 
 const PROJECTS: Project[] = [
   {
+    id: 'cindy',
+    name: 'yuaiccc/cindy',
+    href: 'https://github.com/yuaiccc/cindy',
+    summary: 'An open-source AI agent client that brings coding harnesses, models, tools, memory, and automation into one workspace.',
+    summaryZh: '将 Coding Harness、模型、工具、记忆与自动化整合到同一工作区的开源 AI Agent 客户端。',
+    description:
+      'Cindy is an open-source desktop and mobile AI agent client. It supports Claude Code and Codex harnesses, allowing models and harnesses to switch during a task while the workspace, memory, skills, and tools stay continuous. The client is organized as a pnpm monorepo with Electron desktop and Expo mobile apps.',
+    descriptionZh:
+      'Cindy 是一个开源的桌面与移动端 AI Agent 客户端，支持 Claude Code 和 Codex Harness；任务中可切换模型与 Harness，同时保持工作区、记忆、Skills 和工具连续。客户端采用 pnpm monorepo，包含 Electron 桌面端与 Expo 移动端。',
+    languageLabel: 'TypeScript',
+    languageColor: '#3178c6',
+    metaLabel: 'AI Agent Client',
+    metaLabelZh: 'AI Agent 客户端',
+  },
+  {
     id: 'sillytavern',
     name: 'SillyTavern/SillyTavern',
     href: 'https://github.com/SillyTavern/SillyTavern',
