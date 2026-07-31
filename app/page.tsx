@@ -170,6 +170,17 @@ const JpFlag = ({ className = FLAG_BASE }: IconProps) => (
   </svg>
 );
 
+const CnFlag = ({ className = FLAG_BASE }: IconProps) => (
+  <svg viewBox="0 0 30 20" className={className} aria-label="China" role="img">
+    <rect width="30" height="20" fill="#de2910" />
+    <polygon points="5,2 5.9,4.7 8.8,4.7 6.45,6.4 7.35,9.1 5,7.45 2.65,9.1 3.55,6.4 1.2,4.7 4.1,4.7" fill="#ffde00" />
+    <polygon points="10.5,2.5 10.75,3.25 11.55,3.25 10.9,3.72 11.15,4.48 10.5,4.02 9.85,4.48 10.1,3.72 9.45,3.25 10.25,3.25" fill="#ffde00" />
+    <polygon points="12.4,5 12.65,5.75 13.45,5.75 12.8,6.22 13.05,6.98 12.4,6.52 11.75,6.98 12,6.22 11.35,5.75 12.15,5.75" fill="#ffde00" />
+    <polygon points="12.1,8 12.35,8.75 13.15,8.75 12.5,9.22 12.75,9.98 12.1,9.52 11.45,9.98 11.7,9.22 11.05,8.75 11.85,8.75" fill="#ffde00" />
+    <polygon points="10,10 10.25,10.75 11.05,10.75 10.4,11.22 10.65,11.98 10,11.52 9.35,11.98 9.6,11.22 8.95,10.75 9.75,10.75" fill="#ffde00" />
+  </svg>
+);
+
 export default function Resume() {
   const language = useResumeLanguage();
   const zh = language === 'zh';
@@ -373,8 +384,9 @@ export default function Resume() {
                 <div className="rounded-lg border border-slate-200 bg-slate-50/70 p-5 dark:border-slate-700 dark:bg-slate-800/40">
                   <h3 className="mb-2 font-bold text-slate-900 dark:text-slate-100">{zh ? '语言能力' : 'Languages'}</h3>
                   <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <CnFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '普通话' : 'Mandarin Chinese'}</span>{zh ? '：母语。' : ': native.'}<br />
                     <GbFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '英语 CET-6' : 'English CET-6'}</span>{zh ? '：可用于日常协作和技术讨论。' : ': comfortable using English in day-to-day collaboration and technical discussions.'}<br />
-                    <JpFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '日语 JLPT N3' : 'Japanese JLPT N3'}</span>{zh ? '：能够阅读基础技术资料并适应对日开发语境。' : ': able to read basic technical materials and adapt to Japan-facing development contexts.'}
+                    <JpFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">日本語 JLPT N3</span>：基礎的な技術資料を読み、日本向けの開発環境に適応できます。
                   </p>
                 </div>
               </div>
