@@ -52,7 +52,7 @@ function parseOS(userAgent: string) {
   return 'Unknown OS';
 }
 
-export default function VisitorBadge() {
+export default function VisitorBadge({ className = '' }: { className?: string }) {
   const zh = useResumeLanguage() === 'zh';
   const [info, setInfo] = useState<VisitorInfo>({
     browser: 'Unknown Browser',
@@ -122,7 +122,7 @@ export default function VisitorBadge() {
     : `${info.country}${info.city ? ` ${info.city}` : ''}`;
 
   return (
-    <div className="flex min-h-9 w-full items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 sm:w-auto sm:justify-start">
+    <div className={`flex min-h-9 w-full items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 sm:w-auto sm:justify-start ${className}`}>
       <span className={info.isLoadingLocation ? 'animate-pulse' : ''}>👋</span>
       <span className="min-w-0">{zh ? '你好，来自' : 'Hello from'} <span className="font-bold text-blue-500 dark:text-blue-400">{location}</span>{zh ? '。' : '.'}</span>
       <span className="shrink-0 text-[11px] text-slate-400 dark:text-slate-500">

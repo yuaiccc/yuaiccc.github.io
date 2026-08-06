@@ -46,15 +46,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-5 py-10 text-slate-900 dark:bg-slate-950 dark:text-slate-100 sm:py-16">
+    <main className="blog-shell min-h-screen bg-slate-50 px-5 py-10 text-slate-900 dark:bg-slate-950 dark:text-slate-100 sm:py-16">
       <article className="mx-auto max-w-3xl">
         <Link href="/blog/" className="text-sm font-medium text-blue-600 transition-colors hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
           &larr; 技术笔记
         </Link>
         <header className="mt-8 border-b border-slate-200 pb-8 dark:border-slate-700">
           <time className="font-mono text-sm text-slate-500 dark:text-slate-400">{post.date}</time>
-          <h1 className="mt-3 text-4xl font-bold leading-tight sm:text-5xl">{post.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-400">{post.description}</p>
+          <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl">{post.title}</h1>
+          <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-400">{post.description}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <span key={tag} className="border border-slate-200 px-2 py-1 text-xs font-medium text-slate-600 dark:border-slate-700 dark:text-slate-400">{tag}</span>

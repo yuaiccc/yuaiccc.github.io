@@ -115,9 +115,13 @@ h1, h2 {
   animation-play-state: paused;
 }
 
+.blog-shell {
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
 .blog-content {
-  font-size: 1.0625rem;
-  line-height: 1.85;
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 .blog-content > * + * {

@@ -302,7 +302,6 @@ export default function Resume() {
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <LanguageToggle />
               <ThemeToggle />
-              <VisitorBadge />
               <Link
                 href="/blog/"
                 className="inline-flex h-9 items-center border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition-colors hover:border-blue-200 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-blue-800 dark:hover:text-blue-400"
@@ -449,7 +448,7 @@ export default function Resume() {
             <section className="animate-fade-in-up delay-400">
               <h2 className="mb-4 border-l-[3px] border-blue-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '语言能力' : 'Languages'}</h2>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-700 dark:text-gray-300">
-                <span><CnFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '普通话' : 'Mandarin Chinese'}</span>{zh ? '：母语。' : ': native.'}</span>
+                <span><CnFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">普通话</span>{zh ? '：母语。' : ': native.'}</span>
                 <span><GbFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">{zh ? '英语 CET-6' : 'English CET-6'}</span>{zh ? '：可用于日常协作和技术讨论。' : ': comfortable using English in day-to-day collaboration and technical discussions.'}</span>
                 <span><JpFlag /> <span className="font-bold text-slate-900 dark:text-slate-100">日本語 JLPT N3</span>：基礎的な技術資料を読み、日本向けの開発環境に適応できます。</span>
               </div>
@@ -460,6 +459,8 @@ export default function Resume() {
                 <span>© 2026 Xu Junshan (许君山)</span>
                 <span aria-hidden="true">|</span>
                 <span>Last updated: Jul. 2026.</span>
+                <span aria-hidden="true">|</span>
+                <VisitorBadge className="w-full sm:w-auto" />
                 <span aria-hidden="true">|</span>
                 <a
                   href="https://visitor-badge.laobi.icu/badge?page_id=xj3.tech"
