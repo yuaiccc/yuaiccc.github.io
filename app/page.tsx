@@ -189,23 +189,6 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/hdu-logo.svg" alt="Hangzhou Dianzi University logo" className="h-5 w-auto" />
-            </span>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
-              {zh ? '杭州电子科技大学' : 'Hangzhou Dianzi University'}
-              <span className="mt-0.5 block text-sm font-medium text-slate-500 dark:text-slate-400">{zh ? 'Hangzhou Dianzi University（HDU）' : '杭州电子科技大学（HDU）'}</span>
-            </h3>
-          </div>
-          <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2026.09 -（预计）' : 'Sep 2026 - (expected)'}</span>
-        </div>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">{zh ? '硕士研究生（拟入学）' : 'Postgraduate (Incoming)'}</p>
-      </div>
-
-      <div className="px-1 py-5 sm:px-5">
-        <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/ncwu-logo.png" alt="NCWU logo" className="h-5 w-auto" />
             </span>
             <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
