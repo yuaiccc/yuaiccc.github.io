@@ -196,12 +196,13 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
               <span className="mt-0.5 block text-sm font-medium text-slate-500 dark:text-slate-400">{zh ? 'North China University of Water Resources and Electric Power（NCWU）' : '华北水利水电大学（NCWU）'}</span>
             </h3>
           </div>
-          <span className="self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400">{zh ? '2022.09 - 2026.06' : 'Sep 2022 - Jun 2026'}</span>
         </div>
-        <p className="mb-2 text-gray-700 dark:text-gray-300">{zh ? '人工智能工学学士' : 'B.Eng. in Artificial Intelligence'} / <span className="font-medium text-blue-500">{zh ? '专业前 30%' : 'Top 30% in major'}</span></p>
-        <p className="inline-block rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+        <div className="mb-2 flex flex-wrap items-center gap-2 text-gray-700 dark:text-gray-300">
+          <span>{zh ? '人工智能工学学士' : 'B.Eng. in Artificial Intelligence'} / <span className="font-medium text-blue-500">{zh ? '专业前 30%' : 'Top 30% in major'}</span></span>
+          <span className="inline-block rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
           {zh ? '学业优秀奖学金' : 'Academic Excellence Scholarship'}
-        </p>
+          </span>
+        </div>
         <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
           <span className="font-medium">{zh ? '核心课程：' : 'Core coursework:'}</span> {zh ? '操作系统、数据结构、线性代数、自然语言处理、深度学习、计算机网络、软件工程' : 'Operating Systems, Data Structures, Linear Algebra, Natural Language Processing, Deep Learning, Computer Networks, and Software Engineering'}
         </p>
@@ -311,7 +312,6 @@ export default function Resume() {
                       <span>yuaiccc/feishu-companion-bot</span>
                     </a>
                   </h3>
-                  <span className="mt-2 self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400 sm:mt-0">{zh ? '2026.06 - 至今' : 'Jun 2026 - Present'}</span>
                 </div>
                 <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
@@ -361,7 +361,6 @@ export default function Resume() {
                       <span>v1.3.0</span>
                     </a>
                   </h3>
-                  <span className="mt-2 self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400 sm:mt-0">{zh ? '2026.05 - 至今' : 'May 2026 - Present'}</span>
                 </div>
                 <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
@@ -392,7 +391,6 @@ export default function Resume() {
                       <span>yuaiccc/laborbench-research</span>
                     </a>
                   </h3>
-                  <span className="mt-2 self-start whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-mono text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400 sm:mt-0">{zh ? '2026.07 - 至今' : 'Jul 2026 - Present'}</span>
                 </div>
                 <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />

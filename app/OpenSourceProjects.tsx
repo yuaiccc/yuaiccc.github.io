@@ -94,7 +94,7 @@ export default function OpenSourceProjects() {
 
   return (
     <section className="animate-fade-in-up delay-100">
-      <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '开源与社区' : 'Open Source & Community'}</h2>
+      <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '开源' : 'Open Source'}</h2>
       <div className="grid md:grid-cols-2 gap-4">
         {PROJECTS.map((project) => {
           const expanded = Boolean(expandedProjects[project.id]);
