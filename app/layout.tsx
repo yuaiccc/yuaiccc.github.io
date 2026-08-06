@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import "./globals.css";
-import ResumeSearch from "./ResumeSearch";
+import SiteSearch from "./SiteSearch";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./site";
 import { themeInitScript } from "./theme";
 
@@ -102,7 +102,7 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
-        <ResumeSearch />
+        <SiteSearch />
         {children}
         <Analytics />
       </body>

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import FeishuContact from './FeishuContact';
 import LanguageToggle from './LanguageToggle';
 import OpenSourceProjects from './OpenSourceProjects';
@@ -302,6 +303,12 @@ export default function Resume() {
               <LanguageToggle />
               <ThemeToggle />
               <VisitorBadge />
+              <Link
+                href="/blog/"
+                className="inline-flex h-9 items-center border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 transition-colors hover:border-blue-200 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-blue-800 dark:hover:text-blue-400"
+              >
+                Blog
+              </Link>
             </div>
 
             <section className="animate-fade-in-up delay-100">
