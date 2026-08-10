@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useResumeLanguage } from './language';
 
 type Project = {
@@ -17,6 +17,67 @@ type Project = {
   metaLabelZh?: string;
   ctaLabel?: string;
   ctaLabelZh?: string;
+};
+
+type GitHubContributor = {
+  login?: string;
+  contributions: number;
+};
+
+type ContributorRank = {
+  rank: number;
+  total: number;
+  contributions: number;
+};
+
+const CINDY_CONTRIBUTORS_URL = 'https://github.com/makecindy/cindy/graphs/contributors';
+const CINDY_CONTRIBUTORS_API = 'https://api.github.com/repos/makecindy/cindy/contributors?anon=1&per_page=100';
+
+const useCindyContributorRank = () => {
+  const [rank, setRank] = useState<ContributorRank | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadRank = async () => {
+      try {
+        const contributors: GitHubContributor[] = [];
+
+        for (let page = 1; page <= 10; page += 1) {
+          const response = await fetch(`${CINDY_CONTRIBUTORS_API}&page=${page}`, {
+            cache: 'no-store',
+            headers: { Accept: 'application/vnd.github+json' },
+            signal: controller.signal,
+          });
+
+          if (!response.ok) return;
+
+          const pageContributors = (await response.json()) as GitHubContributor[];
+          contributors.push(...pageContributors);
+
+          if (pageContributors.length < 100) break;
+        }
+
+        const index = contributors.findIndex((contributor) => contributor.login === 'yuaiccc');
+        if (index === -1) return;
+
+        setRank({
+          rank: index + 1,
+          total: contributors.length,
+          contributions: contributors[index].contributions,
+        });
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          console.warn('Unable to load Cindy contributor rank', error);
+        }
+      }
+    };
+
+    void loadRank();
+    return () => controller.abort();
+  }, []);
+
+  return rank;
 };
 
 const PROJECTS: Project[] = [
@@ -91,6 +152,7 @@ const MergedIcon = () => (
 export default function OpenSourceProjects() {
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
   const zh = useResumeLanguage() === 'zh';
+  const cindyContributorRank = useCindyContributorRank();
 
   return (
     <section className="animate-fade-in-up delay-100">
@@ -151,10 +213,38 @@ export default function OpenSourceProjects() {
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: project.languageColor }} />
                   {project.languageLabel}
                 </span>
-                <span className="flex items-center gap-1">
-                  {project.id === 'sillytavern' ? <MergedIcon /> : '⭐'}
-                  {zh ? (project.metaLabelZh ?? project.metaLabel) : project.metaLabel}
-                </span>
+                {project.id === 'cindy' ? (
+                  <a
+                    href={CINDY_CONTRIBUTORS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 font-medium text-emerald-700 transition-colors hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
+                    title={
+                      cindyContributorRank
+                        ? `${cindyContributorRank.contributions} ${zh ? '次已计入贡献' : 'contributions counted'}`
+                        : zh
+                          ? '查看 GitHub Contributor 排名'
+                          : 'View GitHub contributor ranking'
+                    }
+                  >
+                    <span className="relative flex h-2 w-2" aria-hidden="true">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    </span>
+                    {cindyContributorRank
+                      ? zh
+                        ? `实时排名 #${cindyContributorRank.rank} / ${cindyContributorRank.total}`
+                        : `Live rank #${cindyContributorRank.rank} / ${cindyContributorRank.total}`
+                      : zh
+                        ? 'GitHub Contributor'
+                        : 'GitHub Contributor'}
+                  </a>
+                ) : (
+                  <span className="flex items-center gap-1">
+                    <MergedIcon />
+                    {zh ? (project.metaLabelZh ?? project.metaLabel) : project.metaLabel}
+                  </span>
+                )}
               </div>
             </article>
           );
