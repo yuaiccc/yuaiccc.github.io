@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useResumeLanguage } from './language';
 
+type ProjectId = 'cindy' | 'sillytavern';
+
 type Project = {
-  id: string;
+  id: ProjectId;
   name: string;
   href: string;
   summary: string;
@@ -13,8 +15,6 @@ type Project = {
   descriptionZh: string;
   languageLabel: string;
   languageColor: string;
-  metaLabel: string;
-  metaLabelZh?: string;
   ctaLabel?: string;
   ctaLabelZh?: string;
 };
@@ -32,6 +32,13 @@ type ContributorRank = {
 
 const CINDY_CONTRIBUTORS_URL = 'https://github.com/makecindy/cindy/graphs/contributors';
 const CINDY_CONTRIBUTORS_API = 'https://api.github.com/repos/makecindy/cindy/contributors?anon=1&per_page=100';
+const PROJECT_REPOSITORIES: Record<ProjectId, string> = {
+  cindy: 'makecindy/cindy',
+  sillytavern: 'SillyTavern/SillyTavern',
+};
+
+const mergedPullRequestsUrl = (repository: string) =>
+  `https://github.com/${repository}/pulls?q=${encodeURIComponent('is:pr author:yuaiccc is:merged')}`;
 
 const useCindyContributorRank = () => {
   const [rank, setRank] = useState<ContributorRank | null>(null);
@@ -80,6 +87,51 @@ const useCindyContributorRank = () => {
   return rank;
 };
 
+const useMergedPullRequestCounts = () => {
+  const [counts, setCounts] = useState<Partial<Record<ProjectId, number>>>({});
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadCounts = async () => {
+      const entries = await Promise.all(
+        (Object.entries(PROJECT_REPOSITORIES) as [ProjectId, string][]).map(async ([id, repository]) => {
+          try {
+            const query = `repo:${repository} type:pr author:yuaiccc is:merged`;
+            const response = await fetch(
+              `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=1`,
+              {
+                cache: 'no-store',
+                headers: { Accept: 'application/vnd.github+json' },
+                signal: controller.signal,
+              },
+            );
+
+            if (!response.ok) return [id, null] as const;
+            const result = (await response.json()) as { total_count?: number };
+            return [id, typeof result.total_count === 'number' ? result.total_count : null] as const;
+          } catch (error) {
+            if (!(error instanceof DOMException && error.name === 'AbortError')) {
+              console.warn(`Unable to load merged PR count for ${repository}`, error);
+            }
+            return [id, null] as const;
+          }
+        }),
+      );
+
+      const availableCounts = Object.fromEntries(
+        entries.filter((entry): entry is readonly [ProjectId, number] => entry[1] !== null),
+      );
+      setCounts(availableCounts);
+    };
+
+    void loadCounts();
+    return () => controller.abort();
+  }, []);
+
+  return counts;
+};
+
 const PROJECTS: Project[] = [
   {
     id: 'cindy',
@@ -93,8 +145,6 @@ const PROJECTS: Project[] = [
       'Cindy 是一个开源的桌面与移动端 AI Agent 客户端，支持 Claude Code 和 Codex Harness；任务中可切换模型与 Harness，同时保持工作区、记忆、Skills 和工具连续。客户端采用 pnpm monorepo，包含 Electron 桌面端与 Expo 移动端。',
     languageLabel: 'TypeScript',
     languageColor: '#3178c6',
-    metaLabel: 'AI Agent Client',
-    metaLabelZh: 'AI Agent 客户端',
   },
   {
     id: 'sillytavern',
@@ -103,13 +153,11 @@ const PROJECTS: Project[] = [
     summary: 'LLM Frontend for Power Users.',
     summaryZh: '面向高级用户的 LLM 前端。',
     description:
-      'SillyTavern is a feature-rich local LLM frontend for advanced users, with multi-model API support, character cards, and an extensible plugin ecosystem. I have contributed 21 merged pull requests focused on product polish and core experience improvements.',
+      'SillyTavern is a feature-rich local LLM frontend for advanced users, with multi-model API support, character cards, and an extensible plugin ecosystem. My merged contributions focus on product polish and core experience improvements.',
     descriptionZh:
-      'SillyTavern 是面向高级用户的本地 LLM 前端，支持多模型 API、角色卡和可扩展插件生态。我已贡献 21 个合并 PR，主要聚焦产品细节和核心体验改进。',
+      'SillyTavern 是面向高级用户的本地 LLM 前端，支持多模型 API、角色卡和可扩展插件生态。我的合并贡献主要聚焦产品细节和核心体验改进。',
     languageLabel: 'JavaScript',
     languageColor: '#f1e05a',
-    metaLabel: '21 Merged PRs',
-    metaLabelZh: '21 个合并 PR',
   },
 ];
 
@@ -149,10 +197,31 @@ const MergedIcon = () => (
   </svg>
 );
 
+const MergedPullRequests = ({ projectId, count, zh }: { projectId: ProjectId; count?: number; zh: boolean }) => {
+  const repository = PROJECT_REPOSITORIES[projectId];
+  const countLabel = count === undefined
+    ? zh ? '合并 PR' : 'Merged PRs'
+    : zh ? `${count} 个合并 PR` : `${count} merged PR${count === 1 ? '' : 's'}`;
+
+  return (
+    <a
+      href={mergedPullRequestsUrl(repository)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 rounded-full bg-[#f5f0ff] px-2 py-1 font-medium text-[#8250df] ring-1 ring-[#8250df]/15 transition-colors hover:bg-[#ede3ff] dark:bg-[#3b1f50]/70 dark:text-[#d2a8ff] dark:ring-[#d2a8ff]/20 dark:hover:bg-[#4b2864]/80"
+      title={zh ? 'GitHub 实时合并数据' : 'Live merged data from GitHub'}
+    >
+      <MergedIcon />
+      {countLabel}
+    </a>
+  );
+};
+
 export default function OpenSourceProjects() {
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
   const zh = useResumeLanguage() === 'zh';
   const cindyContributorRank = useCindyContributorRank();
+  const mergedPullRequestCounts = useMergedPullRequestCounts();
 
   return (
     <section className="animate-fade-in-up delay-100">
@@ -213,38 +282,38 @@ export default function OpenSourceProjects() {
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: project.languageColor }} />
                   {project.languageLabel}
                 </span>
-                {project.id === 'cindy' ? (
-                  <a
-                    href={CINDY_CONTRIBUTORS_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 font-medium text-emerald-700 transition-colors hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
-                    title={
-                      cindyContributorRank
-                        ? `${cindyContributorRank.contributions} ${zh ? '次已计入贡献' : 'contributions counted'}`
-                        : zh
-                          ? '查看 GitHub Contributor 排名'
-                          : 'View GitHub contributor ranking'
-                    }
-                  >
-                    <span className="relative flex h-2 w-2" aria-hidden="true">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                    </span>
-                    {cindyContributorRank
-                      ? zh
-                        ? `实时排名 #${cindyContributorRank.rank} / ${cindyContributorRank.total}`
-                        : `Live rank #${cindyContributorRank.rank} / ${cindyContributorRank.total}`
-                      : zh
-                        ? 'GitHub Contributor'
+                <div className="flex flex-wrap items-center gap-2">
+                  {project.id === 'cindy' && (
+                    <a
+                      href={CINDY_CONTRIBUTORS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 font-medium text-emerald-700 transition-colors hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
+                      title={
+                        cindyContributorRank
+                          ? `${cindyContributorRank.contributions} ${zh ? '次已计入贡献' : 'contributions counted'}`
+                          : zh
+                            ? '查看 GitHub Contributor 排名'
+                            : 'View GitHub contributor ranking'
+                      }
+                    >
+                      <span className="relative flex h-2 w-2" aria-hidden="true">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                      </span>
+                      {cindyContributorRank
+                        ? zh
+                          ? `实时排名 #${cindyContributorRank.rank} / ${cindyContributorRank.total}`
+                          : `Live rank #${cindyContributorRank.rank} / ${cindyContributorRank.total}`
                         : 'GitHub Contributor'}
-                  </a>
-                ) : (
-                  <span className="flex items-center gap-1">
-                    <MergedIcon />
-                    {zh ? (project.metaLabelZh ?? project.metaLabel) : project.metaLabel}
-                  </span>
-                )}
+                    </a>
+                  )}
+                  <MergedPullRequests
+                    projectId={project.id}
+                    count={mergedPullRequestCounts[project.id]}
+                    zh={zh}
+                  />
+                </div>
               </div>
             </article>
           );
