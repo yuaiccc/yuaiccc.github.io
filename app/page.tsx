@@ -56,9 +56,9 @@ const HDU_REPOSITORY = 'yuaiccc/HDU-xiaoyuananquantong';
 const HDU_CACHED_STAR_COUNT = 32;
 
 const WAIC_PHOTOS = [
-  { src: '/waic/waic-expo-centre.jpg', alt: 'WAIC 2026 上海世博中心会场外景' },
-  { src: '/waic/tencent-selfie.jpg', alt: 'WAIC 2026 现场参会记录' },
-  { src: '/waic/waic-entrance.jpg', alt: 'WAIC 2026 会场入口与人流' },
+  { src: '/waic/waic-expo-centre-display.jpg', alt: 'WAIC 2026 上海世博中心会场外景' },
+  { src: '/waic/tencent-selfie-display.jpg', alt: 'WAIC 2026 现场参会记录' },
+  { src: '/waic/waic-entrance-display.jpg', alt: 'WAIC 2026 会场入口与人流' },
 ];
 
 const useGitHubStarCount = (repository: string) => {
