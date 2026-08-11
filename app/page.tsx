@@ -170,6 +170,12 @@ const GithubIcon = ({ className = 'w-4 h-4' }: IconProps) => (
   </svg>
 );
 
+const StarIcon = ({ className = 'h-3.5 w-3.5' }: IconProps) => (
+  <svg viewBox="0 0 16 16" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.194a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.77-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.528-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.097-.45a.75.75 0 0 1-.564-.41L8 2.694Z" />
+  </svg>
+);
+
 const XIcon = ({ className = 'w-4 h-4' }: IconProps) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231L18.244 2.25Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z" />
@@ -212,7 +218,7 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
   <section className="animate-fade-in-up delay-400">
     <h2 className="mb-4 border-l-[3px] border-blue-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '教育经历' : 'Education'}</h2>
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
-      <div className="px-1 py-5 sm:px-5">
+      <div className="px-1 py-3 sm:px-5">
         <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center rounded-md bg-slate-900 px-2 py-1 ring-1 ring-slate-800">
@@ -231,7 +237,7 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
           {zh ? '学业优秀奖学金' : 'Academic Excellence Scholarship'}
           </span>
         </div>
-        <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           <span className="font-medium">{zh ? '核心课程：' : 'Core coursework:'}</span> {zh ? '操作系统、数据结构、线性代数、自然语言处理、深度学习、计算机网络、软件工程' : 'Operating Systems, Data Structures, Linear Algebra, Natural Language Processing, Deep Learning, Computer Networks, and Software Engineering'}
         </p>
       </div>
@@ -431,20 +437,20 @@ export default function Resume() {
                       href={`https://github.com/${HDU_REPOSITORY}/stargazers`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-900/60"
+                      className="inline-flex items-center gap-1 rounded-full bg-[#fff8c5] px-2 py-1 text-xs font-medium text-[#9a6700] ring-1 ring-[#d4a72c]/20 transition-colors hover:bg-[#fdf1a9] dark:bg-[#4d3b00]/50 dark:text-[#eac54f] dark:ring-[#eac54f]/20 dark:hover:bg-[#5f4a00]/60"
                       aria-label={zh ? `杭电安全教育助手 ${hduStarCount ?? '—'} 个 Star` : `HDU Safety Education Assistant has ${hduStarCount ?? '—'} GitHub stars`}
                     >
-                      <span aria-hidden="true">★</span>
-                      <span>{hduStarCount ?? '—'}</span>
+                      <StarIcon />
+                      <span>{hduStarCount === null ? '—' : `${hduStarCount.toLocaleString(zh ? 'zh-CN' : 'en-US')} Star`}</span>
                     </a>
                   </h3>
                 </div>
                 <p className="mb-3 flex flex-wrap items-center gap-2 text-sm font-medium text-blue-500">
                   <span className="h-2 w-2 rounded-full bg-blue-500" />
-                  {zh ? '个人工具' : 'Independent Tool'} | <InlineTech tech="Python" />
+                  {zh ? '辅助工具' : 'Supporting Tool'} | <InlineTech tech="Python" />
                 </p>
                 <ul className="ml-5 list-disc list-outside space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>{zh ? <>把杭电安全教育平台中重复的答题流程整理成一个本地网页工具，粘贴平台链接后即可开始处理。</> : <>Turned the repetitive answering flow in the HDU safety-education platform into a local web tool that starts from a pasted platform link.</>}</li>
+                  <li>{zh ? <>把杭州电子科技大学安全教育平台中重复的答题流程整理成一个本地网页工具，粘贴平台链接后即可开始处理。</> : <>Turned the repetitive answering flow in the HDU safety-education platform into a local web tool that starts from a pasted platform link.</>}</li>
                   <li>{zh ? <>提供一键安装脚本和本地运行方式，服务只监听本机地址，并附带清晰的使用边界说明。</> : <>Provides a one-command installer and local runtime with a loopback-only service and clear usage boundaries.</>}</li>
                 </ul>
               </div>
