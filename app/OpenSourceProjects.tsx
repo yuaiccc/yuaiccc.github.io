@@ -23,13 +23,23 @@ const PROJECT_REPOSITORIES: Record<ProjectId, string> = {
   cindy: 'makecindy/cindy',
 };
 
+const CACHED_PROJECT_METRICS: Record<ProjectId, { stars: number; mergedPullRequests: number }> = {
+  // Updated when this page is published. These values remain visible when a
+  // visitor cannot reach GitHub, then the client refreshes them when it can.
+  cindy: { stars: 1985, mergedPullRequests: 10 },
+};
+
 const repositoryStarsUrl = (repository: string) => `https://github.com/${repository}/stargazers`;
 
 const mergedPullRequestsUrl = (repository: string) =>
   `https://github.com/${repository}/pulls?q=${encodeURIComponent('is:pr author:yuaiccc is:merged')}`;
 
 const useRepositoryStarCounts = () => {
-  const [counts, setCounts] = useState<Partial<Record<ProjectId, number>>>({});
+  const [counts, setCounts] = useState<Partial<Record<ProjectId, number>>>(() =>
+    Object.fromEntries(
+      (Object.keys(PROJECT_REPOSITORIES) as ProjectId[]).map((id) => [id, CACHED_PROJECT_METRICS[id].stars]),
+    ),
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -59,7 +69,7 @@ const useRepositoryStarCounts = () => {
       const availableCounts = Object.fromEntries(
         entries.filter((entry): entry is readonly [ProjectId, number] => entry[1] !== null),
       );
-      setCounts(availableCounts);
+      setCounts((current) => ({ ...current, ...availableCounts }));
     };
 
     void loadCounts();
@@ -70,7 +80,14 @@ const useRepositoryStarCounts = () => {
 };
 
 const useMergedPullRequestCounts = () => {
-  const [counts, setCounts] = useState<Partial<Record<ProjectId, number>>>({});
+  const [counts, setCounts] = useState<Partial<Record<ProjectId, number>>>(() =>
+    Object.fromEntries(
+      (Object.keys(PROJECT_REPOSITORIES) as ProjectId[]).map((id) => [
+        id,
+        CACHED_PROJECT_METRICS[id].mergedPullRequests,
+      ]),
+    ),
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -104,7 +121,7 @@ const useMergedPullRequestCounts = () => {
       const availableCounts = Object.fromEntries(
         entries.filter((entry): entry is readonly [ProjectId, number] => entry[1] !== null),
       );
-      setCounts(availableCounts);
+      setCounts((current) => ({ ...current, ...availableCounts }));
     };
 
     void loadCounts();

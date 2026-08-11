@@ -53,9 +53,10 @@ const INLINE_TECH: Record<string, TechItem> = {
 };
 
 const HDU_REPOSITORY = 'yuaiccc/HDU-xiaoyuananquantong';
+const HDU_CACHED_STAR_COUNT = 32;
 
 const useGitHubStarCount = (repository: string) => {
-  const [starCount, setStarCount] = useState<number | null>(null);
+  const [starCount, setStarCount] = useState<number | null>(HDU_CACHED_STAR_COUNT);
 
   useEffect(() => {
     const controller = new AbortController();
