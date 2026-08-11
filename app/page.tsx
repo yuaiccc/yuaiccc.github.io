@@ -201,44 +201,14 @@ const XIcon = ({ className = 'w-4 h-4' }: IconProps) => (
   </svg>
 );
 
-const FLAG_BASE = 'h-3.5 w-auto rounded-[2px] shadow-[0_0_0_0.5px_rgba(0,0,0,0.15)] inline-block align-[-2px]';
-
-const GbFlag = ({ className = FLAG_BASE }: IconProps) => (
-  <svg viewBox="0 0 30 20" className={className} aria-label="United Kingdom" role="img">
-    <rect width="30" height="20" fill="#012169" />
-    <path d="M0,0 L30,20 M30,0 L0,20" stroke="#ffffff" strokeWidth="3" />
-    <path d="M0,0 L30,20 M30,0 L0,20" stroke="#C8102E" strokeWidth="1.4" />
-    <rect x="13" width="4" height="20" fill="#ffffff" />
-    <rect y="8" width="30" height="4" fill="#ffffff" />
-    <rect x="14" width="2" height="20" fill="#C8102E" />
-    <rect y="9" width="30" height="2" fill="#C8102E" />
-  </svg>
-);
-
-const JpFlag = ({ className = FLAG_BASE }: IconProps) => (
-  <svg viewBox="0 0 30 20" className={className} aria-label="Japan" role="img">
-    <rect width="30" height="20" fill="#ffffff" />
-    <circle cx="15" cy="10" r="6" fill="#bc002d" />
-  </svg>
-);
-
 const LanguageSummary = ({ zh }: { zh: boolean }) => (
-  <div className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs text-slate-600 md:justify-start dark:text-slate-300">
-    <span><CnFlag /> <span className="font-semibold text-slate-900 dark:text-slate-100">{zh ? '普通话' : 'Mandarin'}</span>{zh ? '：母语' : ': native'}</span>
-    <span><GbFlag /> <span className="font-semibold text-slate-900 dark:text-slate-100">{zh ? '英语 CET-6' : 'English CET-6'}</span></span>
-    <span><JpFlag /> <span className="font-semibold text-slate-900 dark:text-slate-100">日本語 JLPT N3</span></span>
+  <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 text-[11px] text-slate-500 md:justify-start dark:text-slate-400">
+    <span>{zh ? '中文（母语）' : 'Mandarin (native)'}</span>
+    <span aria-hidden="true">·</span>
+    <span>{zh ? '英语 CET-6' : 'English CET-6'}</span>
+    <span aria-hidden="true">·</span>
+    <span>日本語 N3</span>
   </div>
-);
-
-const CnFlag = ({ className = FLAG_BASE }: IconProps) => (
-  <svg viewBox="0 0 30 20" className={className} aria-label="China" role="img">
-    <rect width="30" height="20" fill="#de2910" />
-    <polygon points="5,2 5.9,4.7 8.8,4.7 6.45,6.4 7.35,9.1 5,7.45 2.65,9.1 3.55,6.4 1.2,4.7 4.1,4.7" fill="#ffde00" />
-    <polygon points="10.5,2.5 10.75,3.25 11.55,3.25 10.9,3.72 11.15,4.48 10.5,4.02 9.85,4.48 10.1,3.72 9.45,3.25 10.25,3.25" fill="#ffde00" />
-    <polygon points="12.4,5 12.65,5.75 13.45,5.75 12.8,6.22 13.05,6.98 12.4,6.52 11.75,6.98 12,6.22 11.35,5.75 12.15,5.75" fill="#ffde00" />
-    <polygon points="12.1,8 12.35,8.75 13.15,8.75 12.5,9.22 12.75,9.98 12.1,9.52 11.45,9.98 11.7,9.22 11.05,8.75 11.85,8.75" fill="#ffde00" />
-    <polygon points="10,10 10.25,10.75 11.05,10.75 10.4,11.22 10.65,11.98 10,11.52 9.35,11.98 9.6,11.22 8.95,10.75 9.75,10.75" fill="#ffde00" />
-  </svg>
 );
 
 const EducationSection = ({ zh }: { zh: boolean }) => (
@@ -310,8 +280,7 @@ export default function Resume() {
                     title="许君山"
                     className="cursor-help text-4xl font-semibold text-slate-950 dark:text-white"
                   >
-                    Xu Junshan
-                    <span lang="zh-CN" className="sr-only">（许君山）</span>
+                    {zh ? '许君山' : 'Xu Junshan'}
                   </h1>
                   <LanguageSummary zh={zh} />
                 </div>
@@ -361,12 +330,12 @@ export default function Resume() {
               <OpenSourceProjects />
               <div className="flex flex-col">
               <div className="group mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
+                <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <h3 className="flex min-w-0 items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100 sm:flex-1">
                     <ProjectIcon />
-                    <span>{zh ? '飞书叶 — 本地优先的飞书 AI Agent' : 'Feishuye — Local-First Feishu AI Agent'}</span>
+                    <span className="min-w-0 break-words">{zh ? '飞书叶 — 本地优先的飞书 AI Agent' : 'Feishuye — Local-First Feishu AI Agent'}</span>
                   </h3>
-                  <div className="flex max-w-full flex-wrap items-center gap-2">
+                  <div className="flex w-full max-w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto sm:justify-end">
                     <a
                       href="https://github.com/yuaiccc/feishu-companion-bot"
                       target="_blank"

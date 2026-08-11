@@ -25,6 +25,7 @@ export default function RepositoryActivity({ repository, zh }: { repository: str
 
   useEffect(() => {
     const controller = new AbortController();
+    setUpdatedAt(null);
 
     fetch(`https://api.github.com/repos/${repository}/commits?per_page=1`, {
       cache: 'no-store',
@@ -35,10 +36,10 @@ export default function RepositoryActivity({ repository, zh }: { repository: str
       .then((commits: Array<{ commit?: { committer?: { date?: string } } }> | null) => {
         const dateString = commits?.[0]?.commit?.committer?.date;
         const date = dateString ? new Date(dateString) : null;
-        if (date && !Number.isNaN(date.getTime())) setUpdatedAt(date);
+        setUpdatedAt(date && !Number.isNaN(date.getTime()) ? date : null);
       })
       .catch(() => {
-        // Live activity is supplementary; the project card remains useful offline.
+        setUpdatedAt(null);
       });
 
     return () => controller.abort();
