@@ -6,6 +6,7 @@ export const SITE_DESCRIPTION =
 export const PERSON_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': `${SITE_URL}/#person`,
   name: 'Xu Junshan',
   alternateName: ['许君山', 'Junshan Xu'],
   givenName: 'Junshan',
@@ -80,4 +81,19 @@ export const PERSON_SCHEMA = {
     'https://github.com/yuaiccc',
     'https://x.com/Hakikeioak',
   ],
+};
+
+export const PROFILE_PAGE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@id': `${SITE_URL}/#person`,
+    '@type': 'Person',
+    name: 'Xu Junshan',
+    alternateName: '许君山',
+    url: SITE_URL,
+  },
+  url: SITE_URL,
+  inLanguage: ['zh-CN', 'en'],
+  dateModified: '2026-08-11',
 };

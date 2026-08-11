@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import "./globals.css";
 import SiteSearch from "./SiteSearch";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./site";
+import { PROFILE_PAGE_SCHEMA, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./site";
 import { themeInitScript } from "./theme";
 import SystemThemeSync from "./ThemeToggle";
 
@@ -67,8 +67,8 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
-    locale: "en_US",
-    alternateLocale: ["zh_CN"],
+    locale: "zh_CN",
+    alternateLocale: ["en_US"],
     type: "website",
     images: [
       {
@@ -98,12 +98,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className="antialiased">
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
         <SystemThemeSync />
+        <Script id="profile-page-schema" type="application/ld+json">
+          {JSON.stringify(PROFILE_PAGE_SCHEMA)}
+        </Script>
         <SiteSearch />
         {children}
         <Analytics />
