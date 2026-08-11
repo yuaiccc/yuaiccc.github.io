@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useResumeLanguage } from './language';
+import RepositoryActivity from './RepositoryActivity';
 
 type ProjectId = 'cindy';
 
@@ -17,6 +18,8 @@ type Project = {
   ctaLabelZh?: string;
   showTapTapBrand?: boolean;
   downloadHref?: string;
+  officialHref?: string;
+  officialLabel?: string;
 };
 
 const PROJECT_REPOSITORIES: Record<ProjectId, string> = {
@@ -144,6 +147,8 @@ const PROJECTS: Project[] = [
       'Cindy 是一个开源的桌面与移动端 AI Agent 客户端，支持 Claude Code 和 Codex Harness；任务中可切换模型与 Harness，同时保持工作区、记忆、Skills 和工具连续。客户端采用 pnpm monorepo，包含 Electron 桌面端与 Expo 移动端。',
     showTapTapBrand: true,
     downloadHref: 'https://cindy.app/download/',
+    officialHref: 'https://github.com/makecindy/cindy',
+    officialLabel: 'makecindy/cindy',
   },
 ];
 
@@ -153,6 +158,12 @@ const RepoIcon = () => (
       fillRule="evenodd"
       d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z"
     />
+  </svg>
+);
+
+const GithubIcon = () => (
+  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2C6.48 2 2 6.6 2 12.26c0 4.53 2.87 8.37 6.84 9.72.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.72-2.78.62-3.37-1.37-3.37-1.37-.46-1.2-1.12-1.52-1.12-1.52-.91-.64.07-.63.07-.63 1.01.08 1.55 1.07 1.55 1.07.9 1.6 2.36 1.13 2.93.86.09-.67.35-1.13.64-1.39-2.22-.26-4.56-1.15-4.56-5.13 0-1.13.39-2.06 1.03-2.78-.11-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.06A9.2 9.2 0 0 1 12 7.25c.83 0 1.67.12 2.45.36 1.9-1.34 2.74-1.06 2.74-1.06.56 1.42.22 2.47.11 2.73.64.72 1.03 1.65 1.03 2.78 0 3.99-2.34 4.86-4.57 5.12.36.32.69.95.69 1.92 0 1.39-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.28 10.28 0 0 0 22 12.26C22 6.6 17.52 2 12 2Z" />
   </svg>
 );
 
@@ -252,9 +263,9 @@ export default function OpenSourceProjects() {
           return (
             <article
               key={project.id}
-              className="group rounded-lg border border-slate-200 bg-slate-50 p-5 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-slate-600"
+              className="group min-w-0 rounded-lg border border-slate-200 bg-slate-50 p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-slate-600 sm:p-5"
             >
-              <div className="mb-2 flex items-center gap-2">
+              <div className="mb-2 flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() =>
@@ -263,7 +274,7 @@ export default function OpenSourceProjects() {
                       [project.id]: !current[project.id],
                     }))
                   }
-                  className="min-w-0 cursor-pointer text-left"
+                  className="min-w-0 flex-1 cursor-pointer text-left"
                   aria-expanded={expanded}
                 >
                   <div className="flex items-center gap-1">
@@ -281,7 +292,19 @@ export default function OpenSourceProjects() {
                     <ChevronIcon expanded={expanded} />
                   </div>
                 </button>
-                <div className="flex flex-shrink-0 items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                {project.officialHref && (
+                  <a
+                    href={project.officialHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex shrink-0 items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500 transition-colors hover:bg-slate-200 hover:text-blue-500 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-blue-400"
+                    aria-label={zh ? '在 GitHub 查看 Cindy 官方项目' : 'View the official Cindy project on GitHub'}
+                  >
+                    <GithubIcon />
+                    <span>{project.officialLabel}</span>
+                  </a>
+                )}
+                <div className="flex max-w-full flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                   <RepositoryStars
                     projectId={project.id}
                     count={repositoryStarCounts[project.id]}
@@ -303,6 +326,7 @@ export default function OpenSourceProjects() {
                       {zh ? '下载' : 'Download'}
                     </a>
                   )}
+                  <RepositoryActivity repository={PROJECT_REPOSITORIES[project.id]} zh={zh} />
                 </div>
               </div>
 

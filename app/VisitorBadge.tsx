@@ -52,8 +52,9 @@ function parseOS(userAgent: string) {
   return 'Unknown OS';
 }
 
-export default function VisitorBadge({ className = '' }: { className?: string }) {
+export default function VisitorBadge({ className = '', initiallyExpanded = false }: { className?: string; initiallyExpanded?: boolean }) {
   const zh = useResumeLanguage() === 'zh';
+  const [expanded, setExpanded] = useState(initiallyExpanded);
   const [info, setInfo] = useState<VisitorInfo>({
     browser: 'Unknown Browser',
     os: 'Unknown OS',
@@ -61,6 +62,8 @@ export default function VisitorBadge({ className = '' }: { className?: string })
   });
 
   useEffect(() => {
+    if (!expanded) return;
+
     const controller = new AbortController();
 
     const loadLocation = () => {
@@ -113,7 +116,7 @@ export default function VisitorBadge({ className = '' }: { className?: string })
         window.clearTimeout(idleId);
       }
     };
-  }, []);
+  }, [expanded]);
 
   const location = info.isLoadingLocation
     ? (zh ? '定位中...' : 'locating you...')
@@ -121,13 +124,33 @@ export default function VisitorBadge({ className = '' }: { className?: string })
     ? (zh ? '地球' : 'Earth')
     : `${info.country}${info.city ? ` ${info.city}` : ''}`;
 
+  if (!expanded) {
+    return (
+      <button
+        type="button"
+        onClick={() => setExpanded(true)}
+        className={`inline-flex h-8 items-center gap-1 rounded-lg px-2 text-xs text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 ${className}`}
+        aria-expanded="false"
+      >
+        <span aria-hidden="true">⌄</span>
+        <span>{zh ? '访客信息' : 'Visitor details'}</span>
+      </button>
+    );
+  }
+
   return (
-    <div className={`flex min-h-9 w-full items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 sm:w-auto sm:justify-start ${className}`}>
+    <button
+      type="button"
+      onClick={() => setExpanded(false)}
+      className={`flex min-h-9 w-full items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-left text-xs text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 sm:w-auto sm:justify-start ${className}`}
+      aria-expanded="true"
+      aria-label={zh ? '收起访客信息' : 'Collapse visitor details'}
+    >
       <span className={info.isLoadingLocation ? 'animate-pulse' : ''}>👋</span>
       <span className="min-w-0">{zh ? '你好，来自' : 'Hello from'} <span className="font-bold text-blue-500 dark:text-blue-400">{location}</span>{zh ? '。' : '.'}</span>
       <span className="shrink-0 text-[11px] text-slate-400 dark:text-slate-500">
         ({info.browser || 'Unknown Browser'} / {info.os || 'Unknown OS'})
       </span>
-    </div>
+    </button>
   );
 }

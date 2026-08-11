@@ -5,6 +5,7 @@ import "./globals.css";
 import SiteSearch from "./SiteSearch";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "./site";
 import { themeInitScript } from "./theme";
+import SystemThemeSync from "./ThemeToggle";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -102,6 +103,7 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}
         </Script>
+        <SystemThemeSync />
         <SiteSearch />
         {children}
         <Analytics />
