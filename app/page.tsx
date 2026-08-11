@@ -324,6 +324,8 @@ export default function Resume() {
               </Link>
             </div>
 
+            <OpenSourceProjects />
+
             <section className="animate-fade-in-up delay-100">
               <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '项目' : 'Projects'}</h2>
 
@@ -450,8 +452,6 @@ export default function Resume() {
             </section>
 
             <EducationSection zh={zh} />
-
-            <OpenSourceProjects />
 
             <section className="animate-fade-in-up delay-300">
               <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '技术栈' : 'Tech Stack'}</h2>
