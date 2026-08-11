@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useResumeLanguage } from './language';
 
-type ProjectId = 'cindy' | 'sillytavern';
+type ProjectId = 'cindy';
 
 type Project = {
   id: ProjectId;
@@ -15,13 +15,11 @@ type Project = {
   descriptionZh: string;
   ctaLabel?: string;
   ctaLabelZh?: string;
-  logoHref?: string;
-  logoAlt?: string;
+  showTapTapBrand?: boolean;
 };
 
 const PROJECT_REPOSITORIES: Record<ProjectId, string> = {
   cindy: 'makecindy/cindy',
-  sillytavern: 'SillyTavern/SillyTavern',
 };
 
 const repositoryStarsUrl = (repository: string) => `https://github.com/${repository}/stargazers`;
@@ -126,19 +124,7 @@ const PROJECTS: Project[] = [
       'Cindy is an open-source desktop and mobile AI agent client. It supports Claude Code and Codex harnesses, allowing models and harnesses to switch during a task while the workspace, memory, skills, and tools stay continuous. The client is organized as a pnpm monorepo with Electron desktop and Expo mobile apps.',
     descriptionZh:
       'Cindy 是一个开源的桌面与移动端 AI Agent 客户端，支持 Claude Code 和 Codex Harness；任务中可切换模型与 Harness，同时保持工作区、记忆、Skills 和工具连续。客户端采用 pnpm monorepo，包含 Electron 桌面端与 Expo 移动端。',
-    logoHref: 'https://www.taptap.cn/',
-    logoAlt: 'TapTap',
-  },
-  {
-    id: 'sillytavern',
-    name: 'SillyTavern/SillyTavern',
-    href: 'https://github.com/SillyTavern/SillyTavern',
-    summary: 'LLM Frontend for Power Users.',
-    summaryZh: '面向高级用户的 LLM 前端。',
-    description:
-      'SillyTavern is a feature-rich local LLM frontend for advanced users, with multi-model API support, character cards, and an extensible plugin ecosystem. My merged contributions focus on product polish and core experience improvements.',
-    descriptionZh:
-      'SillyTavern 是面向高级用户的本地 LLM 前端，支持多模型 API、角色卡和可扩展插件生态。我的合并贡献主要聚焦产品细节和核心体验改进。',
+    showTapTapBrand: true,
   },
 ];
 
@@ -234,9 +220,7 @@ export default function OpenSourceProjects() {
   const mergedPullRequestCounts = useMergedPullRequestCounts();
 
   return (
-    <section className="animate-fade-in-up delay-100">
-      <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '开源' : 'Open Source'}</h2>
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="mb-4 grid gap-4 md:grid-cols-2">
         {PROJECTS.map((project) => {
           const expanded = Boolean(expandedProjects[project.id]);
 
@@ -245,7 +229,7 @@ export default function OpenSourceProjects() {
               key={project.id}
               className="group rounded-lg border border-slate-200 bg-slate-50 p-5 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-slate-600"
             >
-              <div className="mb-2 flex items-center gap-2">
+              <div className="mb-2">
                 <button
                   type="button"
                   onClick={() =>
@@ -260,23 +244,18 @@ export default function OpenSourceProjects() {
                   <div className="flex items-center justify-between">
                     <h3 className="flex items-center gap-2 truncate font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
                       <RepoIcon />
-                      <span className="truncate">{project.name}</span>
+                      {project.showTapTapBrand ? (
+                        <span className="flex items-center gap-1.5 truncate">
+                          <TapTapLogo />
+                          <span className="truncate">TapTap / Cindy</span>
+                        </span>
+                      ) : (
+                        <span className="truncate">{project.name}</span>
+                      )}
                     </h3>
                     <ChevronIcon expanded={expanded} />
                   </div>
                 </button>
-                {project.logoHref && (
-                  <a
-                    href={project.logoHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Visit ${project.logoAlt}`}
-                    title={project.logoAlt}
-                    className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white transition-colors hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
-                  >
-                    <TapTapLogo />
-                  </a>
-                )}
               </div>
 
               <div className={`overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[500px] opacity-100 mb-4' : 'max-h-0 opacity-0 m-0'}`}>
@@ -317,6 +296,5 @@ export default function OpenSourceProjects() {
           );
         })}
       </div>
-    </section>
   );
 }

@@ -278,7 +278,7 @@ export default function Resume() {
                 </div>
               </div>
               <div className="w-full rounded-lg border border-blue-200 bg-blue-50/70 p-3.5 text-center shadow-sm ring-1 ring-blue-100/70 sm:w-auto sm:min-w-64 md:text-right dark:border-blue-900/70 dark:bg-blue-950/25 dark:ring-blue-950/50">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300">Contact</p>
+                <p className="mb-2 text-xs font-semibold tracking-wide text-blue-700 dark:text-blue-300">{zh ? '如何联系我？' : 'How to reach me?'}</p>
                 <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-gray-300">
                 <a
                   href="mailto:yuaiccc@aliyun.com"
@@ -323,11 +323,11 @@ export default function Resume() {
               </Link>
             </div>
 
-            <OpenSourceProjects />
-
             <section className="animate-fade-in-up delay-100">
               <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '项目' : 'Projects'}</h2>
 
+              <OpenSourceProjects />
+              <div className="flex flex-col">
               <div className="group mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2 gap-2">
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors flex items-center gap-2 flex-wrap">
@@ -346,7 +346,7 @@ export default function Resume() {
                 </div>
                 <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  <InlineTech tech="Feishu" />
+                  <InlineTech tech="Feishu" label={zh ? '字节跳动-飞书' : 'Bytedance-Feishu'} />
                   <span aria-hidden="true">+</span>
                   <InlineTech tech="Go" />
                 </p>
@@ -413,7 +413,7 @@ export default function Resume() {
                 </ul>
               </div>
 
-              <div className="group rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
+              <div className="group order-first mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
                   <h3 className="flex flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
                     <span>{zh ? '杭电安全教育助手' : 'HDU Safety Education Assistant'}</span>
@@ -447,6 +447,7 @@ export default function Resume() {
                   <li>{zh ? <>把杭电安全教育平台中重复的答题流程整理成一个本地网页工具，粘贴平台链接后即可开始处理。</> : <>Turned the repetitive answering flow in the HDU safety-education platform into a local web tool that starts from a pasted platform link.</>}</li>
                   <li>{zh ? <>提供一键安装脚本和本地运行方式，服务只监听本机地址，并附带清晰的使用边界说明。</> : <>Provides a one-command installer and local runtime with a loopback-only service and clear usage boundaries.</>}</li>
                 </ul>
+              </div>
               </div>
             </section>
 
