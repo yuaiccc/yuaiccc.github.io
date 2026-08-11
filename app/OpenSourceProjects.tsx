@@ -16,6 +16,7 @@ type Project = {
   ctaLabel?: string;
   ctaLabelZh?: string;
   showTapTapBrand?: boolean;
+  downloadHref?: string;
 };
 
 const PROJECT_REPOSITORIES: Record<ProjectId, string> = {
@@ -125,6 +126,7 @@ const PROJECTS: Project[] = [
     descriptionZh:
       'Cindy 是一个开源的桌面与移动端 AI Agent 客户端，支持 Claude Code 和 Codex Harness；任务中可切换模型与 Harness，同时保持工作区、记忆、Skills 和工具连续。客户端采用 pnpm monorepo，包含 Electron 桌面端与 Expo 移动端。',
     showTapTapBrand: true,
+    downloadHref: 'https://cindy.app/download/',
   },
 ];
 
@@ -158,6 +160,12 @@ const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
 const ExternalLinkIcon = () => (
   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+  </svg>
+);
+
+const DownloadIcon = () => (
+  <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v12m0 0 4-4m-4 4-4-4m-5 7h18" />
   </svg>
 );
 
@@ -229,7 +237,7 @@ export default function OpenSourceProjects() {
               key={project.id}
               className="group rounded-lg border border-slate-200 bg-slate-50 p-5 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-slate-600"
             >
-              <div className="mb-2">
+              <div className="mb-2 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() =>
@@ -238,10 +246,10 @@ export default function OpenSourceProjects() {
                       [project.id]: !current[project.id],
                     }))
                   }
-                  className="min-w-0 flex-1 cursor-pointer text-left"
+                  className="min-w-0 cursor-pointer text-left"
                   aria-expanded={expanded}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
                     <h3 className="flex items-center gap-2 truncate font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
                       <RepoIcon />
                       {project.showTapTapBrand ? (
@@ -256,9 +264,32 @@ export default function OpenSourceProjects() {
                     <ChevronIcon expanded={expanded} />
                   </div>
                 </button>
+                <div className="flex flex-shrink-0 items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                  <RepositoryStars
+                    projectId={project.id}
+                    count={repositoryStarCounts[project.id]}
+                    zh={zh}
+                  />
+                  <MergedPullRequests
+                    projectId={project.id}
+                    count={mergedPullRequestCounts[project.id]}
+                    zh={zh}
+                  />
+                  {project.downloadHref && (
+                    <a
+                      href={project.downloadHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-full bg-blue-500 px-2 py-1 font-medium text-white transition-colors hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
+                    >
+                      <DownloadIcon />
+                      {zh ? '下载' : 'Download'}
+                    </a>
+                  )}
+                </div>
               </div>
 
-              <div className={`overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[500px] opacity-100 mb-4' : 'max-h-0 opacity-0 m-0'}`}>
+              <div className={`overflow-hidden transition-all duration-300 ${expanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 m-0'}`}>
                 <p className="border-t border-slate-200 pt-3 text-sm leading-relaxed text-gray-700 dark:border-slate-700 dark:text-gray-300">
                   {zh ? project.descriptionZh : project.description}
                 </p>
@@ -275,23 +306,10 @@ export default function OpenSourceProjects() {
               </div>
 
               {!expanded && (
-                <p className="mb-4 h-10 line-clamp-2 text-sm text-gray-600 dark:text-gray-300 transition-all duration-300">
+                <p className="h-10 line-clamp-2 text-sm text-gray-600 dark:text-gray-300 transition-all duration-300">
                   {zh ? project.summaryZh : project.summary}
                 </p>
               )}
-
-              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                <RepositoryStars
-                  projectId={project.id}
-                  count={repositoryStarCounts[project.id]}
-                  zh={zh}
-                />
-                <MergedPullRequests
-                  projectId={project.id}
-                  count={mergedPullRequestCounts[project.id]}
-                  zh={zh}
-                />
-              </div>
             </article>
           );
         })}
