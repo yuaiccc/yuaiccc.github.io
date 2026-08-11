@@ -107,6 +107,7 @@ export default function RootLayout({
         <Script id="profile-page-schema" type="application/ld+json">
           {JSON.stringify(PROFILE_PAGE_SCHEMA)}
         </Script>
+        <meta name="baidu-site-verification" content="codeva-e61SZKqDFq" />
         <SiteSearch />
         {children}
         <Analytics />
