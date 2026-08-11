@@ -220,7 +220,7 @@ export default function OpenSourceProjects() {
   const mergedPullRequestCounts = useMergedPullRequestCounts();
 
   return (
-      <div className="mb-4 grid gap-4 md:grid-cols-2">
+      <div className="mb-4 grid gap-4">
         {PROJECTS.map((project) => {
           const expanded = Boolean(expandedProjects[project.id]);
 
