@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import FeishuContact from './FeishuContact';
 import LanguageToggle from './LanguageToggle';
 import OpenSourceProjects from './OpenSourceProjects';
@@ -49,6 +50,34 @@ const INLINE_TECH: Record<string, TechItem> = {
   GitHub: { name: 'GitHub', icon: 'https://cdn.simpleicons.org/github/181717', invertDark: true },
   Linux: { name: 'Linux', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg' },
   Nginx: { name: 'Nginx', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg' },
+};
+
+const HDU_REPOSITORY = 'yuaiccc/HDU-xiaoyuananquantong';
+
+const useGitHubStarCount = (repository: string) => {
+  const [starCount, setStarCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(`https://api.github.com/repos/${repository}`, {
+      headers: { Accept: 'application/vnd.github+json' },
+      signal: controller.signal,
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { stargazers_count?: unknown } | null) => {
+        if (typeof data?.stargazers_count === 'number') {
+          setStarCount(data.stargazers_count);
+        }
+      })
+      .catch(() => {
+        // A missing badge should not prevent the portfolio from rendering.
+      });
+
+    return () => controller.abort();
+  }, [repository]);
+
+  return starCount;
 };
 
 const TECH_GROUPS: TechGroup[] = [
@@ -214,6 +243,7 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
 export default function Resume() {
   const language = useResumeLanguage();
   const zh = language === 'zh';
+  const hduStarCount = useGitHubStarCount(HDU_REPOSITORY);
 
   return (
     <>
@@ -383,23 +413,38 @@ export default function Resume() {
               </div>
 
               <div className="group rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-baseline mb-2">
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-500 transition-colors flex items-center gap-2 flex-wrap">
-                    <span>{zh ? 'LaboRBench — 中文劳动争议推理评测工具' : 'LaboRBench — Chinese Labor-Dispute Reasoning Evaluation'}</span>
-                    <a href="https://github.com/yuaiccc/laborbench-research" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-blue-500 dark:text-slate-400 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-2 py-0.5 rounded-md transition-colors" aria-label={zh ? '在 GitHub 查看 LaboRBench' : 'View LaboRBench on GitHub'}>
-                      <GithubIcon className="w-3.5 h-3.5" />
-                      <span>yuaiccc/laborbench-research</span>
+                <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                  <h3 className="flex flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
+                    <span>{zh ? '杭电安全教育助手' : 'HDU Safety Education Assistant'}</span>
+                    <a
+                      href={`https://github.com/${HDU_REPOSITORY}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500 transition-colors hover:bg-slate-200 hover:text-blue-500 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-blue-400"
+                      aria-label={zh ? '在 GitHub 查看杭电安全教育助手' : 'View HDU Safety Education Assistant on GitHub'}
+                    >
+                      <GithubIcon className="h-3.5 w-3.5" />
+                      <span>{HDU_REPOSITORY}</span>
+                    </a>
+                    <a
+                      href={`https://github.com/${HDU_REPOSITORY}/stargazers`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-900/60"
+                      aria-label={zh ? `杭电安全教育助手 ${hduStarCount ?? '—'} 个 Star` : `HDU Safety Education Assistant has ${hduStarCount ?? '—'} GitHub stars`}
+                    >
+                      <span aria-hidden="true">★</span>
+                      <span>{hduStarCount ?? '—'}</span>
                     </a>
                   </h3>
                 </div>
-                <p className="text-sm text-blue-500 font-medium mb-3 flex flex-wrap items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
-                  {zh ? '研究项目' : 'Research Project'} | <InlineTech tech="Python" /> + LLM Evaluation + Reproducible Research
+                <p className="mb-3 flex flex-wrap items-center gap-2 text-sm font-medium text-blue-500">
+                  <span className="h-2 w-2 rounded-full bg-blue-500" />
+                  {zh ? '个人工具' : 'Independent Tool'} | <InlineTech tech="Python" />
                 </p>
-                <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">数据与证据：</span>面向中文劳动争议判决构建来源可追溯的 claim 级标注；发布去标识化标注与 source offsets，原始裁判文书仅保留在本地忽略目录。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Data and provenance:</span> Built source-grounded, claim-level annotations for Chinese labor-dispute judgments, releasing de-identified labels and source offsets while keeping judgment text in ignored local directories.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">评测边界：</span>将前瞻预测与结果泄漏分离，记录每条银标注的来源、分歧、模型调用与冻结数据哈希；明确其衡量的是与已公开裁判结果的对应性，而非裁判正确性。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Evaluation boundary:</span> Separates prospective prediction from outcome leakage and records every silver-label source, disagreement, model call, and frozen dataset hash; it measures correspondence to published judgments rather than legal correctness.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可复现实验：</span>实现 collection、annotation、adjudication、evaluation、statistics 与 paper-building CLI；运行可恢复，失败请求独立写入 JSONL，支持质量 notebook 与 release validation。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reproducible experiments:</span> Implemented collection, annotation, adjudication, evaluation, statistics, and paper-building CLIs; runs are resumable, failed requests are isolated to JSONL, and the repository includes a quality notebook and release validation.</>}</li>
+                <ul className="ml-5 list-disc list-outside space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li>{zh ? <>把杭电安全教育平台中重复的答题流程整理成一个本地网页工具，粘贴平台链接后即可开始处理。</> : <>Turned the repetitive answering flow in the HDU safety-education platform into a local web tool that starts from a pasted platform link.</>}</li>
+                  <li>{zh ? <>提供一键安装脚本和本地运行方式，服务只监听本机地址，并附带清晰的使用边界说明。</> : <>Provides a one-command installer and local runtime with a loopback-only service and clear usage boundaries.</>}</li>
                 </ul>
               </div>
             </section>
