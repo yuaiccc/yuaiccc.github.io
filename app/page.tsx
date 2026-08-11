@@ -85,7 +85,6 @@ const TECH_GROUPS: TechGroup[] = [
     title: 'AI & ML',
     items: [
       { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
-      { name: 'PyTorch', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg' },
       { name: 'Hugging Face', icon: '/tech/huggingface.svg' },
       { name: 'LangChain / LangGraph', icon: 'https://cdn.simpleicons.org/langchain/1C3C3C', invertDark: true },
       { name: 'Claude Code', icon: '/tech/claude.svg' },
@@ -493,9 +492,8 @@ export default function Resume() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 transition hover:text-slate-600 dark:hover:text-slate-300"
-                  aria-label="Visitor number"
+                  aria-label="Visit count"
                 >
-                  <span>Visitor number:</span>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="https://visitor-badge.laobi.icu/badge?page_id=xj3.tech" alt="Visit counter" className="h-5 w-auto" />
                 </a>

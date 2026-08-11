@@ -53,7 +53,6 @@ export const PERSON_SCHEMA = {
     'GraphRAG',
     'Multimodal Memory',
     'Hugging Face',
-    'PyTorch',
     'Dify',
     'OCR',
     'Python',
