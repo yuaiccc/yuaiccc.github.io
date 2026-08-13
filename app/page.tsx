@@ -465,11 +465,19 @@ export default function Resume() {
               <h2 className="mb-4 border-l-[3px] border-amber-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '近期活动' : 'Recent Activity'}</h2>
               <div className="group rounded-lg border border-amber-200/80 bg-amber-50/30 p-4 transition-[border-color,box-shadow] duration-200 hover:border-amber-300 hover:shadow-sm dark:border-amber-900/60 dark:bg-amber-950/10 dark:hover:border-amber-800 sm:p-5">
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-amber-700 dark:text-slate-100 dark:group-hover:text-amber-300">
-                    <span className="relative h-6 w-20 shrink-0 overflow-hidden rounded-sm" aria-hidden="true">
-                      <Image src="/goai/goai-logo.png" alt="" fill sizes="80px" className="object-cover" />
-                    </span>
-                    <span>{zh ? 'GOAI AI for Research — 小分子–蛋白质结合轨迹预测' : 'GOAI AI for Research — Protein–Ligand Binding Trajectory Prediction'}</span>
+                  <h3 className="min-w-0 flex-1 text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <a
+                      href="https://www.goaihz.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-w-0 flex-wrap items-center gap-2 transition-colors hover:text-amber-700 dark:hover:text-amber-300"
+                      aria-label={zh ? '打开 GOAI 世界人工智能开源大赛官方页面' : 'Open the official GOAI Global Open-source AI Challenge website'}
+                    >
+                      <span className="relative h-6 w-20 shrink-0 overflow-hidden rounded-sm" aria-hidden="true">
+                        <Image src="/goai/goai-logo.png" alt="" fill sizes="80px" className="object-cover" />
+                      </span>
+                      <span>{zh ? 'GOAI AI for Research — 小分子–蛋白质结合轨迹预测' : 'GOAI AI for Research — Protein–Ligand Binding Trajectory Prediction'}</span>
+                    </a>
                   </h3>
                   <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
                     {zh ? '竞赛项目 · 进行中' : 'Competition project · In progress'}
@@ -483,11 +491,19 @@ export default function Resume() {
 
               <div className="group mt-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
-                    <span className="relative h-6 w-9 shrink-0 overflow-hidden rounded-sm" aria-hidden="true">
-                      <Image src="/waic/waic-logo.jpg" alt="" fill sizes="36px" className="object-cover" />
-                    </span>
-                    <span>{zh ? 'WAIC 2026 — 世界人工智能大会' : 'WAIC 2026 — World Artificial Intelligence Conference'}</span>
+                  <h3 className="min-w-0 flex-1 text-lg font-bold text-slate-900 dark:text-slate-100">
+                    <a
+                      href="https://www.worldaic.com.cn/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-w-0 flex-wrap items-center gap-2 transition-colors hover:text-blue-500 dark:hover:text-blue-300"
+                      aria-label={zh ? '打开世界人工智能大会官方页面' : 'Open the official World Artificial Intelligence Conference website'}
+                    >
+                      <span className="relative h-6 w-9 shrink-0 overflow-hidden rounded-sm" aria-hidden="true">
+                        <Image src="/waic/waic-logo.jpg" alt="" fill sizes="36px" className="object-cover" />
+                      </span>
+                      <span>{zh ? 'WAIC 2026 — 世界人工智能大会' : 'WAIC 2026 — World Artificial Intelligence Conference'}</span>
+                    </a>
                   </h3>
                   <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
                     {zh ? '7月19日 · 上海世博展览馆' : 'July 19 · Shanghai World Expo Exhibition & Convention Center'}

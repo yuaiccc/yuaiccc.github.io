@@ -8,6 +8,9 @@ type CloneSnapshot = {
   window_days: number;
   count: number;
   uniques: number;
+  cumulative_count?: number;
+  cumulative_since?: string;
+  counted_through?: string;
   clones: Array<{ timestamp: string; count: number; uniques: number }>;
   fetched_at: string;
 };
@@ -43,10 +46,12 @@ export default function GitHubCloneCount({ repository, zh }: { repository: strin
     return () => controller.abort();
   }, [repository]);
 
+  const cumulativeCount = snapshot.cumulative_count ?? snapshot.count;
   const label = zh
-    ? `近 ${snapshot.window_days} 天累计有 ${snapshot.uniques.toLocaleString('zh-CN')} 人 Clone`
-    : `${snapshot.uniques.toLocaleString('en-US')} people cloned / last ${snapshot.window_days}d`;
+    ? `累计 Clone ${cumulativeCount.toLocaleString('zh-CN')} 次`
+    : `${cumulativeCount.toLocaleString('en-US')} total clone events`;
   const fetchedAt = new Date(snapshot.fetched_at);
+  const cumulativeSince = snapshot.cumulative_since ? new Date(snapshot.cumulative_since) : null;
 
   return (
     <a
@@ -56,8 +61,8 @@ export default function GitHubCloneCount({ repository, zh }: { repository: strin
       className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-200/70 transition-colors hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:ring-blue-800/60 dark:hover:bg-blue-900/50"
       title={
         zh
-          ? `GitHub 最近 ${snapshot.window_days} 天唯一 Clone 用户统计；快照更新于 ${fetchedAt.toLocaleString('zh-CN')}`
-          : `GitHub ${snapshot.window_days}-day traffic snapshot; updated ${fetchedAt.toLocaleString('en-US')}`
+          ? `历史累计 Clone 次数；从 ${cumulativeSince?.toLocaleDateString('zh-CN') ?? '当前快照'} 开始记录，最近一次更新于 ${fetchedAt.toLocaleString('zh-CN')}`
+          : `Historical clone-event total tracked since ${cumulativeSince?.toLocaleDateString('en-US') ?? 'the current snapshot'}; last updated ${fetchedAt.toLocaleString('en-US')}`
       }
     >
       <CloneIcon />
