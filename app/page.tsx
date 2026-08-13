@@ -188,6 +188,13 @@ const GithubIcon = ({ className = 'w-4 h-4' }: IconProps) => (
   </svg>
 );
 
+const ModelScopeIcon = ({ className = 'w-4 h-4' }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path d="M4 5.5 12 2l8 3.5v9L12 18l-8-3.5v-9Z" fill="currentColor" opacity=".9" />
+    <path d="m8 8 4 2 4-2v5l-4 2-4-2V8Z" fill="white" opacity=".95" />
+  </svg>
+);
+
 const StarIcon = ({ className = 'h-3.5 w-3.5' }: IconProps) => (
   <svg viewBox="0 0 16 16" fill="currentColor" className={className} aria-hidden="true">
     <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.194a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.77-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.528-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.097-.45a.75.75 0 0 1-.564-.41L8 2.694Z" />
@@ -311,6 +318,16 @@ export default function Resume() {
                 >
                   <GithubIcon />
                   <span>yuaiccc</span>
+                </a>
+                <a
+                  href="https://modelscope.cn/profile/yuaiccc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
+                  aria-label={zh ? '打开我的 ModelScope 主页' : 'Open my ModelScope profile'}
+                >
+                  <ModelScopeIcon className="h-4 w-4 text-[#1677ff]" />
+                  <span>ModelScope</span>
                 </a>
                 <a
                   href="https://x.com/Hakikeioak"
