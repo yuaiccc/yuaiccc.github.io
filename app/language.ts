@@ -7,6 +7,19 @@ export type ResumeLanguage = 'en' | 'zh' | 'zh-TW';
 
 const LANGUAGE_CHANGE_EVENT = 'resume-language-change';
 
+const getSystemLanguage = (): ResumeLanguage => {
+  const candidates = [navigator.language, ...(navigator.languages ?? [])].map((value) => value.toLowerCase());
+
+  for (const locale of candidates) {
+    if (locale.startsWith('zh')) {
+      return /hant|tw|hk|mo/.test(locale) ? 'zh-TW' : 'zh';
+    }
+    if (locale.startsWith('en')) return 'en';
+  }
+
+  return 'en';
+};
+
 const subscribeToLanguage = (onStoreChange: () => void) => {
   window.addEventListener(LANGUAGE_CHANGE_EVENT, onStoreChange);
   window.addEventListener('storage', onStoreChange);
@@ -17,12 +30,11 @@ const subscribeToLanguage = (onStoreChange: () => void) => {
   };
 };
 
-const getLanguageSnapshot = (): ResumeLanguage =>
-  (window.localStorage.getItem(LANGUAGE_STORAGE_KEY) as ResumeLanguage | null) === 'zh-TW'
-    ? 'zh-TW'
-    : window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'zh'
-      ? 'zh'
-      : 'en';
+const getLanguageSnapshot = (): ResumeLanguage => {
+  const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  if (stored === 'en' || stored === 'zh' || stored === 'zh-TW') return stored;
+  return getSystemLanguage();
+};
 
 const getServerLanguageSnapshot = (): ResumeLanguage => 'en';
 
