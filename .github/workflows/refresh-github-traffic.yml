@@ -18,7 +18,7 @@ jobs:
       - name: Refresh clone metrics
         run: node scripts/update-github-traffic.mjs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
           GITHUB_TRAFFIC_REPOSITORY: yuaiccc/HDU-xiaoyuananquantong
 
       - name: Commit changed snapshot
