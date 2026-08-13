@@ -189,10 +189,9 @@ const GithubIcon = ({ className = 'w-4 h-4' }: IconProps) => (
 );
 
 const ModelScopeIcon = ({ className = 'w-4 h-4' }: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-    <path d="M4 5.5 12 2l8 3.5v9L12 18l-8-3.5v-9Z" fill="currentColor" opacity=".9" />
-    <path d="m8 8 4 2 4-2v5l-4 2-4-2V8Z" fill="white" opacity=".95" />
-  </svg>
+  // ModelScope's favicon is served by its official domain/CDN.
+  // eslint-disable-next-line @next/next/no-img-element
+  <img src="https://modelscope.cn/favicon.ico" alt="" className={`${className} object-contain`} aria-hidden="true" />
 );
 
 const StarIcon = ({ className = 'h-3.5 w-3.5' }: IconProps) => (
