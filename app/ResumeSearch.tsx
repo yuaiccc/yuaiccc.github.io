@@ -1,7 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useResumeLanguage, type ResumeLanguage } from './language';
+import { useResumeLanguage } from './language';
+
+type SearchLanguage = 'en' | 'zh';
 
 type SearchResult = {
   id: string;
@@ -17,17 +19,17 @@ type SearchResult = {
 const DEBOUNCE_MS = 300;
 // Chinese carries far more info per character; drop the floor so single-char
 // filters like "记" or "语" still get a chance to fire while EN still needs 2.
-const MIN_QUERY_LEN: Record<ResumeLanguage, number> = { en: 2, zh: 1 };
+const MIN_QUERY_LEN: Record<'en' | 'zh', number> = { en: 2, zh: 1 };
 // Same reasoning for the summary preview line.
-const CONTENT_TRUNCATE: Record<ResumeLanguage, number> = { en: 180, zh: 90 };
+const CONTENT_TRUNCATE: Record<'en' | 'zh', number> = { en: 180, zh: 90 };
 
 // ---- Typewriter placeholder ----
-const TYPEWRITER_EXAMPLES: Record<ResumeLanguage, string[]> = {
+const TYPEWRITER_EXAMPLES: Record<SearchLanguage, string[]> = {
   en: ['RAG evaluation', 'Go agent', 'memory system', 'LangGraph', 'SwiftUI', 'OCR'],
   zh: ['RAG 评测', '飞书机器人', '记忆系统', 'LangGraph', '灵动岛', '混合检索'],
 };
 
-function useTypewriter(lang: ResumeLanguage, active: boolean): string {
+function useTypewriter(lang: SearchLanguage, active: boolean): string {
   const [display, setDisplay] = useState({ lang, text: '' });
   const stateRef = useRef({ idx: 0, char: 0, deleting: false, timer: null as ReturnType<typeof setTimeout> | null });
 
@@ -137,7 +139,7 @@ async function loadIndex(): Promise<IndexRecord[]> {
   return _indexCache!;
 }
 
-async function clientSideSearch(q: string, lang: ResumeLanguage): Promise<SearchResult[]> {
+async function clientSideSearch(q: string, lang: SearchLanguage): Promise<SearchResult[]> {
   const records = await loadIndex();
   const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
   if (tokens.length === 0) return [];
@@ -171,7 +173,8 @@ async function clientSideSearch(q: string, lang: ResumeLanguage): Promise<Search
 
 export default function ResumeSearch() {
   const language = useResumeLanguage();
-  const t = COPY[language];
+  const contentLanguage = language === 'en' ? 'en' : 'zh';
+  const t = COPY[contentLanguage];
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[] | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
@@ -189,9 +192,9 @@ export default function ResumeSearch() {
 
   // Typewriter runs only when input is empty and unfocused
   const typewriterActive = query.length === 0 && !focused;
-  const typewriterText = useTypewriter(language, typewriterActive);
+  const typewriterText = useTypewriter(contentLanguage, typewriterActive);
 
-  const runSearch = useCallback(async (q: string, lang: ResumeLanguage) => {
+  const runSearch = useCallback(async (q: string, lang: SearchLanguage) => {
     abortRef.current?.abort();
     const ctrl = new AbortController();
     abortRef.current = ctrl;
@@ -258,14 +261,14 @@ export default function ResumeSearch() {
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     const trimmed = query.trim();
-    if (trimmed.length < MIN_QUERY_LEN[language]) {
+    if (trimmed.length < MIN_QUERY_LEN[contentLanguage]) {
       setResults(null);
       setStatus('idle');
       setErrorMsg(null);
       return;
     }
     // Instant path: serve from the client cache, skip debounce + network.
-    const hit = cacheRef.current.get(`${language}:${trimmed}`);
+    const hit = cacheRef.current.get(`${contentLanguage}:${trimmed}`);
     if (hit) {
       abortRef.current?.abort();
       setResults(hit);
@@ -273,11 +276,11 @@ export default function ResumeSearch() {
       setErrorMsg(null);
       return;
     }
-    debounceRef.current = setTimeout(() => runSearch(trimmed, language), DEBOUNCE_MS);
+    debounceRef.current = setTimeout(() => runSearch(trimmed, contentLanguage), DEBOUNCE_MS);
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, [query, language, runSearch]);
+  }, [query, contentLanguage, runSearch]);
 
   // ⌘K / Ctrl+K focus, Esc to close.
   useEffect(() => {
@@ -307,7 +310,7 @@ export default function ResumeSearch() {
 
   const showDropdown =
     open &&
-    query.trim().length >= MIN_QUERY_LEN[language] &&
+    query.trim().length >= MIN_QUERY_LEN[contentLanguage] &&
     (status !== 'idle' || results !== null);
 
   return (
@@ -342,7 +345,7 @@ export default function ResumeSearch() {
                 onBlur={() => setFocused(false)}
                 placeholder=""
                 aria-label={t.ariaLabel}
-                lang={language === 'zh' ? 'zh-CN' : 'en'}
+                lang={contentLanguage === 'zh' ? 'zh-CN' : 'en'}
                 className="w-full bg-transparent py-2 pr-2 text-sm text-slate-800 dark:text-slate-100 focus:outline-none"
                 spellCheck={false}
                 autoComplete="off"
@@ -354,7 +357,7 @@ export default function ResumeSearch() {
                 >
                   {focused ? t.placeholder : (
                     <>
-                      <span>{language === 'zh' ? '试试搜 ' : 'Try '}</span>
+                      <span>{contentLanguage === 'zh' ? '试试搜 ' : 'Try '}</span>
                       <span className="text-slate-500 dark:text-slate-400 font-medium">{typewriterText}</span>
                       <span className="ml-px inline-block w-px h-3.5 bg-slate-400 dark:bg-slate-500 animate-[cursorBlink_1s_step-end_infinite]" />
                     </>
@@ -401,7 +404,7 @@ export default function ResumeSearch() {
                       CATEGORY_STYLES[r.category] ??
                       'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
                     const badgeLabel =
-                      language === 'zh'
+                      contentLanguage === 'zh'
                         ? (CATEGORY_LABEL_ZH[r.category] ?? r.category)
                         : r.category;
                     const Wrapper: React.ElementType = r.link ? 'a' : 'div';
@@ -440,7 +443,7 @@ export default function ResumeSearch() {
                             </div>
                           )}
                           <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            {truncate(r.content, CONTENT_TRUNCATE[language])}
+                            {truncate(r.content, CONTENT_TRUNCATE[contentLanguage])}
                           </p>
                         </Wrapper>
                       </li>

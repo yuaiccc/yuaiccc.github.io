@@ -53,7 +53,7 @@ function parseOS(userAgent: string) {
 }
 
 export default function VisitorBadge({ className = '', initiallyExpanded = false }: { className?: string; initiallyExpanded?: boolean }) {
-  const zh = useResumeLanguage() === 'zh';
+  const zh = useResumeLanguage() !== 'en';
   const [expanded, setExpanded] = useState(initiallyExpanded);
   const [info, setInfo] = useState<VisitorInfo>({
     browser: 'Unknown Browser',

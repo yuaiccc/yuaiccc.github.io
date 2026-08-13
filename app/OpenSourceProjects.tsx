@@ -251,7 +251,7 @@ const MergedPullRequests = ({ projectId, count, zh }: { projectId: ProjectId; co
 
 export default function OpenSourceProjects() {
   const [expandedProjects, setExpandedProjects] = useState<Record<string, boolean>>({});
-  const zh = useResumeLanguage() === 'zh';
+  const zh = useResumeLanguage() !== 'en';
   const repositoryStarCounts = useRepositoryStarCounts();
   const mergedPullRequestCounts = useMergedPullRequestCounts();
 

@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import OpenCC from 'opencc-js';
+import { useEffect, useRef, useState } from 'react';
 import FeishuContact from './FeishuContact';
 import GitHubCloneCount from './GitHubCloneCount';
 import LanguageToggle from './LanguageToggle';
@@ -215,15 +216,20 @@ const XIcon = ({ className = 'w-4 h-4' }: IconProps) => (
   </svg>
 );
 
-const LanguageSummary = ({ zh }: { zh: boolean }) => (
+const LanguageSummary = ({ language }: { language: 'en' | 'zh' | 'zh-TW' }) => {
+  const zh = language !== 'en';
+  return (
   <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 text-[11px] text-slate-500 md:justify-start dark:text-slate-400">
+    <span>{zh ? '工作语言：' : 'Working languages:'}</span>
+    <span aria-hidden="true">·</span>
     <span>{zh ? '中文（母语）' : 'Mandarin (native)'}</span>
     <span aria-hidden="true">·</span>
     <span>{zh ? '英语 CET-6' : 'English CET-6'}</span>
     <span aria-hidden="true">·</span>
     <span>日本語 N3</span>
   </div>
-);
+  );
+};
 
 const EducationSection = ({ zh }: { zh: boolean }) => (
   <section className="animate-fade-in-up delay-400">
@@ -258,9 +264,26 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
 
 export default function Resume() {
   const language = useResumeLanguage();
-  const zh = language === 'zh';
+  const zh = language !== 'en';
   const hduStarCount = useGitHubStarCount(HDU_REPOSITORY);
   const [footerExpanded, setFooterExpanded] = useState(false);
+  const resumeCardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = resumeCardRef.current;
+    if (!root || language !== 'zh-TW') return;
+
+    const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
+    const handler = OpenCC.HTMLConverter(converter, root, 'zh-CN', 'zh-TW');
+    handler.convert();
+    const observer = new MutationObserver(() => handler.convert());
+    observer.observe(root, { characterData: true, childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      handler.restore();
+    };
+  }, [language]);
 
   return (
     <>
@@ -270,7 +293,11 @@ export default function Resume() {
       />
       <ScrollProgress />
       <div className="min-h-screen bg-slate-50 px-3 py-4 font-sans text-gray-800 transition-colors duration-300 dark:bg-slate-950 dark:text-gray-100 sm:px-6 sm:py-8 lg:px-8">
-        <div className="resume-card relative mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-slate-200 transition-colors duration-300 dark:bg-gray-900 dark:ring-slate-800">
+        <div
+          ref={resumeCardRef}
+          lang={language === 'en' ? 'en' : 'zh-CN'}
+          className="resume-card relative mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-slate-200 transition-colors duration-300 dark:bg-gray-900 dark:ring-slate-800"
+        >
           {/* === 头部信息 === */}
           <header className="border-b border-slate-100 bg-white p-5 text-slate-900 transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900 dark:text-white sm:p-6 md:p-8">
             <div className="flex flex-col items-center justify-between gap-5 md:flex-row">
@@ -296,7 +323,7 @@ export default function Resume() {
                   >
                     {zh ? '许君山' : 'Xu Junshan'}
                   </h1>
-                  <LanguageSummary zh={zh} />
+                  <LanguageSummary language={language} />
                 </div>
               </div>
               <div className="w-full rounded-lg border border-blue-200 bg-blue-50/70 p-3.5 text-center shadow-sm ring-1 ring-blue-100/70 sm:w-auto sm:min-w-64 md:text-right dark:border-blue-900/70 dark:bg-blue-950/25 dark:ring-blue-950/50">

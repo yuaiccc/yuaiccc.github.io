@@ -6,7 +6,7 @@ import { useResumeLanguage } from './language';
 
 export default function FeishuContact() {
   const [open, setOpen] = useState(false);
-  const zh = useResumeLanguage() === 'zh';
+  const zh = useResumeLanguage() !== 'en';
 
   return (
     <div
