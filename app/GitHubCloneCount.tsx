@@ -17,7 +17,8 @@ const RAW_SNAPSHOT_URL =
 
 const CloneIcon = () => (
   <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-    <path d="M4.5 1.5a2.5 2.5 0 1 0 1.25 4.665v3.67a2.5 2.5 0 1 0 1.5 0v-1.42h1.5a1.75 1.75 0 0 1 1.75 1.75v.33a2.5 2.5 0 1 0 1.5 0v-.33a3.25 3.25 0 0 0-3.25-3.25h-1.5V6.165A2.5 2.5 0 0 0 4.5 1.5Zm0 1.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm2 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4.5-1.25a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" />
+    <path d="M3.5 0A2.5 2.5 0 0 0 1 2.5v9A2.5 2.5 0 0 0 3.5 14h2.75a.75.75 0 0 0 0-1.5H3.5a1 1 0 0 1 0-2h2.75a.75.75 0 0 0 0-1.5H3.5c-.356 0-.694.074-1 .208V2.5a1 1 0 0 1 1-1h8v2.75a.75.75 0 0 0 1.5 0V.75a.75.75 0 0 0-.75-.75H3.5Z" />
+    <path d="M8 8.058C8 7.023 8.75 6 9.887 6h5.363a.75.75 0 0 1 .75.75v8.5a.75.75 0 0 1-.75.75h-5A2.25 2.25 0 0 1 8 13.75Zm6.5 3.442v-4H9.887c-.07 0-.156.086-.238.125a.663.663 0 0 0-.149.433v3.57c.235-.083.487-.128.75-.128Zm-5 2.25c0 .414.336.75.75.75h4.25V13h-4.25a.75.75 0 0 0-.75.75Z" />
   </svg>
 );
 
@@ -43,8 +44,8 @@ export default function GitHubCloneCount({ repository, zh }: { repository: strin
   }, [repository]);
 
   const label = zh
-    ? `近 ${snapshot.window_days} 天唯一用户 Clone ${snapshot.uniques.toLocaleString('zh-CN')}`
-    : `${snapshot.uniques.toLocaleString('en-US')} unique clones / ${snapshot.window_days}d`;
+    ? `近 ${snapshot.window_days} 天累计有 ${snapshot.uniques.toLocaleString('zh-CN')} 人 Clone`
+    : `${snapshot.uniques.toLocaleString('en-US')} people cloned / last ${snapshot.window_days}d`;
   const fetchedAt = new Date(snapshot.fetched_at);
 
   return (
@@ -55,7 +56,7 @@ export default function GitHubCloneCount({ repository, zh }: { repository: strin
       className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-blue-200/70 transition-colors hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:ring-blue-800/60 dark:hover:bg-blue-900/50"
       title={
         zh
-          ? `GitHub 最近 ${snapshot.window_days} 天统计；快照更新于 ${fetchedAt.toLocaleString('zh-CN')}`
+          ? `GitHub 最近 ${snapshot.window_days} 天唯一 Clone 用户统计；快照更新于 ${fetchedAt.toLocaleString('zh-CN')}`
           : `GitHub ${snapshot.window_days}-day traffic snapshot; updated ${fetchedAt.toLocaleString('en-US')}`
       }
     >

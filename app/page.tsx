@@ -23,6 +23,7 @@ type TechItem = {
 type TechGroup = {
   title: string;
   items: TechItem[];
+  featured?: boolean;
 };
 
 const INLINE_TECH: Record<string, TechItem> = {
@@ -90,9 +91,18 @@ const useGitHubStarCount = (repository: string) => {
 
 const TECH_GROUPS: TechGroup[] = [
   {
-    title: 'AI & CS',
+    title: 'Core Languages',
+    featured: true,
     items: [
       { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
+      { name: 'Go', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg' },
+      { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
+      { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
+    ],
+  },
+  {
+    title: 'AI & CS',
+    items: [
       { name: 'Hugging Face', icon: '/tech/huggingface.svg' },
       { name: 'LangChain / LangGraph', icon: 'https://cdn.simpleicons.org/langchain/1C3C3C', invertDark: true },
       { name: 'Claude Code', icon: '/tech/claude.svg' },
@@ -105,9 +115,6 @@ const TECH_GROUPS: TechGroup[] = [
     items: [
       { name: 'C', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg' },
       { name: 'C++', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg' },
-      { name: 'Go', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original-wordmark.svg' },
-      { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
-      { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
       { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
       { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg', invertDark: true },
       { name: 'Vue', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg' },
@@ -359,7 +366,7 @@ export default function Resume() {
                 <ul className="list-disc list-outside ml-5 space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">智能体运行时：</span>基于飞书 WebSocket 长连接和 CardKit 流式 API 构建 <span className="font-semibold text-slate-900 dark:text-slate-200">Go</span> 服务；普通对话走快速路径，复杂请求由上下文 Planner 按需编排记忆、文档、GitHub、搜索和本机工具。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Agent runtime:</span> Built a <span className="font-semibold text-slate-900 dark:text-slate-200">Go</span> service over Feishu&apos;s persistent WebSocket channel and CardKit streaming API; a fast path handles ordinary chat while a context Planner orchestrates memory, documents, GitHub, search, and local tools for complex requests.</>}</li>
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">分层记忆与 RAG：</span>将短期会话、本地 JSON 长期事实、聊天与图片归档分层管理；接入 LightRAG 构建独立的文档图谱/向量检索链路，并对上下文进行预算控制与隐私脱敏。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Layered memory and RAG:</span> Separated short-term session state, local JSON long-term facts, and chat/image archives; integrated LightRAG for an independent document graph and vector-retrieval path with context-budget controls and privacy redaction.</>}</li>
-                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态与可见性：</span>集成 Apple Vision 本地 OCR、飞书 OCR 降级和本地视觉模型；基于 SHA-256 内容寻址媒体库实现消息幂等、权限隔离、资产修复与图片记忆召回，并在 macOS 菜单栏展示 Agent 阶段状态。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal and observable:</span> Integrated local Apple Vision OCR, Feishu OCR fallback, and local vision models; a SHA-256 content-addressed media vault provides message idempotency, permission isolation, repair tooling, image-memory recall, and macOS menu-bar agent-status visibility.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态与可见性：</span>接入 Apple Vision、飞书 OCR 与本地视觉模型，支持图片记忆召回和 Agent 阶段可见。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal and observable:</span> Combined Apple Vision, Feishu OCR, and local vision models for image-memory recall and visible Agent stages.</>}</li>
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可靠性：</span>为长驻 Agent 设计时效与成员校验、后台记忆整理、分阶段延迟日志、健康检查与降级路径；LightRAG、CardKit、OCR 或外部 Agent 不可用时回退到本地能力。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reliability:</span> Added event-age and membership checks, background memory consolidation, phased latency logs, health checks, and graceful degradation; unavailable LightRAG, CardKit, OCR, or external-agent services fall back to local paths.</>}</li>
                 </ul>
               </div>
@@ -513,9 +520,12 @@ export default function Resume() {
               <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 border-l-[3px] border-blue-500 pl-3 mb-4">{zh ? '技术栈' : 'Tech Stack'}</h2>
               <div className="space-y-4 rounded-lg border border-gray-200 bg-slate-50 p-5 dark:border-gray-800 dark:bg-slate-900">
                 {TECH_GROUPS.map((group) => (
-                  <div key={group.title} className="space-y-3">
-                    <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-[0.14em] font-mono">
-                      {zh ? ({ Engineering: '工程开发', 'Backend & Data': '后端与数据', 'DevOps & Tools': 'DevOps 与工具' }[group.title] ?? group.title) : group.title}
+                  <div
+                    key={group.title}
+                    className={`space-y-3 rounded-lg p-3 ${group.featured ? 'border border-blue-200 bg-blue-50/70 dark:border-blue-900/70 dark:bg-blue-950/20' : ''}`}
+                  >
+                    <h3 className={`text-xs uppercase tracking-[0.14em] font-mono ${group.featured ? 'font-bold text-blue-600 dark:text-blue-300' : 'font-semibold text-gray-500 dark:text-gray-400'}`}>
+                      {zh ? ({ 'Core Languages': '主要语言', 'AI & CS': 'AI 与计算机科学', Engineering: '工程开发', 'Backend & Data': '后端与数据', 'DevOps & Tools': 'DevOps 与工具' }[group.title] ?? group.title) : group.title}
                     </h3>
                     <ul className="flex flex-wrap gap-3" aria-label={group.title}>
                       {group.items.map((item) => (

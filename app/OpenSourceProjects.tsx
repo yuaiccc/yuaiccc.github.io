@@ -139,12 +139,12 @@ const PROJECTS: Project[] = [
     id: 'cindy',
     name: 'yuaiccc/cindy',
     href: 'https://github.com/yuaiccc/cindy',
-    summary: 'An open-source AI agent client that brings coding harnesses, models, tools, memory, and automation into one workspace.',
-    summaryZh: '将 Coding Harness、模型、工具、记忆与自动化整合到同一工作区的开源 AI Agent 客户端。',
+    summary: 'A visible multi-model, multi-harness AI agent workspace for long-running collaboration.',
+    summaryZh: '支持多模型、多 Harness 协同的可视化 AI Agent 工作区：过程可见、可随时插话干预，适合长任务持续协作。',
     description:
-      'Cindy is an open-source desktop and mobile AI agent client. It supports Claude Code and Codex harnesses, allowing models and harnesses to switch during a task while the workspace, memory, skills, and tools stay continuous. The client is organized as a pnpm monorepo with Electron desktop and Expo mobile apps.',
+      'Cindy is an open-source AI agent client built for visible, long-running collaboration. Multiple models and coding harnesses can work together in one task; the full process stays visible, users can intervene mid-task, and completed work remains available instead of disappearing. It supports Claude Code and Codex harnesses across desktop and mobile.',
     descriptionZh:
-      'Cindy 是一个开源的桌面与移动端 AI Agent 客户端，支持 Claude Code 和 Codex Harness；任务中可切换模型与 Harness，同时保持工作区、记忆、Skills 和工具连续。客户端采用 pnpm monorepo，包含 Electron 桌面端与 Expo 移动端。',
+      'Cindy 是一个面向长任务协作的开源 AI Agent 客户端：支持多个模型与 Coding Harness 协同，完整工作过程可见，用户可以随时插话干预；任务完成后工作上下文仍保留，适合持续协作。',
     showTapTapBrand: true,
     downloadHref: 'https://cindy.app/download/',
     officialHref: 'https://github.com/makecindy/cindy',
