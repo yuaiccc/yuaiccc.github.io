@@ -5,7 +5,7 @@
  *
  * The zh strings below are hand-authored. Sources:
  *   • proj-* rows and edu-* / lang-* rows: pulled from app/page.tsx zh branches
- *   • oss-arklab / oss-sillytavern: pulled from app/OpenSourceProjects.tsx descriptionZh
+ *   • oss-sillytavern: pulled from app/OpenSourceProjects.tsx descriptionZh
  *   • the rest: hand-translated from the existing English content
  */
 
@@ -35,12 +35,6 @@ const ZH = {
     period:  '2025.12 - 至今',
     tech:    'Python + PyTorch + Linux',
     content: '独立负责的多语种场景文字识别端到端项目。清洗并整理 113 万行语料库，修复开源工具的渲染 bug，生成 10 万余条高质量合成训练样本。将大规模小图转换为 LMDB 数据集，将 batch size 提升至 768，把验证时间从数小时压缩到数分钟。验证准确率达到 98.3%，解决了繁体中文与日文字符重叠的识别难题。',
-  },
-  'oss-arklab': {
-    title:   'yuaiccc/ArkLab',
-    period:  '',
-    tech:    'Python',
-    content: 'ArkLab 是一个 CLI 优先的本地 RAG 评测与诊断工作台，将 benchmark 运行转化为可复现的工程证据，包括检索指标、LLM-as-Judge 接口、轨迹文件、失败样本池、实验摘要和回归评测集。既能运行 MultiHop-RAG、EnterpriseRAG-Bench 等公开基准，也能通过 API 适配器评测 japanese-verb-master 等真实应用。',
   },
   'oss-japanese-verb': {
     title:   'yuaiccc/japanese-verb-master',

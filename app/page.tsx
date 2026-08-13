@@ -8,7 +8,7 @@ import OpenSourceProjects from './OpenSourceProjects';
 import RepositoryActivity from './RepositoryActivity';
 import ScrollProgress from './ScrollProgress';
 import { useResumeLanguage } from './language';
-import { PERSON_SCHEMA } from './site';
+import { PERSON_SCHEMA, SITE_LAST_UPDATED } from './site';
 import VisitorBadge from './VisitorBadge';
 
 type IconProps = { className?: string };
@@ -540,7 +540,7 @@ export default function Resume() {
               <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
                 <span>© 2026 Xu Junshan (许君山)</span>
                 <span aria-hidden="true">|</span>
-                <span>Last updated: Jul. 2026.</span>
+                <span>{zh ? `最后更新：${SITE_LAST_UPDATED}` : `Last updated: ${SITE_LAST_UPDATED}.`}</span>
                 <span aria-hidden="true">|</span>
                 <VisitorBadge className="w-full sm:w-auto" initiallyExpanded />
                 <span aria-hidden="true">|</span>

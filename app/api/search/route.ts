@@ -25,9 +25,10 @@ type Record = {
 };
 
 type Index = {
+  provider?: string;
+  base_url?: string;
   model: string;
   dimensions: number;
-  task: string;
   generated_at: string | null;
   records: Record[];
 };
@@ -62,8 +63,7 @@ function parseLang(raw: string | null): Lang {
 }
 
 // ---- in-memory query-embedding cache (LRU by insertion order) ----
-// The query embedding is language-independent (task=retrieval.query), so the
-// cache key is just the raw query text; EN and 中 searches share entries.
+// The cache key is just the raw query text; EN and 中 searches share entries.
 // Lives per warm function instance — a best-effort hit layer, not a source of
 // truth. On a cold start it's simply empty.
 const EMBED_CACHE_MAX = 256;
@@ -122,26 +122,28 @@ function rateLimit(ip: string): { ok: boolean; retryAfter: number } {
 }
 
 async function embedQuery(query: string, apiKey: string): Promise<number[]> {
-  const res = await fetch('https://api.jina.ai/v1/embeddings', {
+  const baseUrl = INDEX.base_url || 'https://ark.cn-beijing.volces.com/api/coding/v3';
+  const res = await fetch(`${baseUrl.replace(/\/$/, '')}/embeddings`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: INDEX.model || 'jina-embeddings-v3',
-      task: 'retrieval.query',
+      model: INDEX.model || 'doubao-embedding-vision',
       input: [query],
+      encoding_format: 'float',
     }),
     cache: 'no-store',
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`jina embeddings API ${res.status}: ${text.slice(0, 200)}`);
+    throw new Error(`Ark embeddings API ${res.status}: ${text.slice(0, 200)}`);
   }
   const json = await res.json();
-  const vec = json?.data?.[0]?.embedding;
-  if (!Array.isArray(vec)) throw new Error('unexpected jina API response shape');
+  const rawVec = json?.data?.[0]?.embedding;
+  const vec = Array.isArray(rawVec?.[0]) ? rawVec[0] : rawVec;
+  if (!Array.isArray(vec)) throw new Error('unexpected Ark embeddings response shape');
   return vec;
 }
 
@@ -160,7 +162,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'query too long (max 400 chars)' }, { status: 400 });
   }
 
-  // Guard the expensive Jina call behind a per-IP rate limit.
+  // Guard the expensive Ark call behind a per-IP rate limit.
   const rl = rateLimit(clientIp(request));
   if (!rl.ok) {
     return NextResponse.json(
@@ -176,16 +178,16 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const apiKey = process.env.JINA_API_KEY;
+  const apiKey = process.env.ARK_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { error: 'server missing JINA_API_KEY env var' },
+      { error: 'server missing ARK_API_KEY env var' },
       { status: 500 },
     );
   }
 
   // Reuse the normalized query vector if a warm instance has seen this exact
-  // query before — skips the ~800ms Jina round-trip entirely.
+  // query before — skips the remote embedding round-trip entirely.
   let q = cacheGet(query);
   let cached = true;
   if (!q) {

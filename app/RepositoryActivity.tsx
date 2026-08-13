@@ -25,7 +25,6 @@ export default function RepositoryActivity({ repository, zh }: { repository: str
 
   useEffect(() => {
     const controller = new AbortController();
-    setUpdatedAt(null);
 
     fetch(`https://api.github.com/repos/${repository}/commits?per_page=1`, {
       cache: 'no-store',

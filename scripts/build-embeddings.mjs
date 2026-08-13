@@ -2,27 +2,24 @@
 /**
  * Build `data/resume_index.json` from `data/resume_knowledge.csv`.
  *
- * Uses the `jina` CLI (https://github.com/jina-ai/cli) to embed each row's
- * `content` column with `retrieval.passage` task hint, then writes a compact
- * JSON index that `app/api/search/route.ts` loads at cold start.
+ * Uses the Volcengine Ark OpenAI-compatible embeddings endpoint to embed each
+ * row's English and Chinese passage, then writes a compact JSON index that
+ * `app/api/search/route.ts` loads at cold start.
  *
  * Requires:
- *   - `jina` on PATH (uv tool install jina-cli)
- *   - JINA_API_KEY in env (or in .env.local)
+ *   - ARK_API_KEY in env (or in .env.local)
+ *   - optional ARK_EMBEDDING_BASE_URL / ARK_EMBEDDING_MODEL overrides
  *
  * Run:
  *   npm run build:index
  */
 
-import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const REPO_ROOT = resolve(new URL('..', import.meta.url).pathname);
 const CSV_PATH = resolve(REPO_ROOT, 'data/resume_knowledge.csv');
 const OUT_PATH = resolve(REPO_ROOT, 'data/resume_index.json');
-const MODEL = process.env.JINA_MODEL || 'jina-embeddings-v3';
-const PASSAGE_TASK = 'retrieval.passage';
 
 function loadEnvLocal() {
   const envFile = resolve(REPO_ROOT, '.env.local');
@@ -36,6 +33,11 @@ function loadEnvLocal() {
     process.env[key] = value;
   }
 }
+
+loadEnvLocal();
+
+const BASE_URL = process.env.ARK_EMBEDDING_BASE_URL || 'https://ark.cn-beijing.volces.com/api/coding/v3';
+const MODEL = process.env.ARK_EMBEDDING_MODEL || 'doubao-embedding-vision';
 
 /** Minimal RFC 4180 CSV parser (handles quoted fields and embedded commas / newlines / "" escapes). */
 function parseCsv(text) {
@@ -81,30 +83,40 @@ function pickZh(row, key) {
   return zh || row[key] || '';
 }
 
-function embed(text) {
-  const args = ['embed', text, '--model', MODEL, '--task', PASSAGE_TASK, '--json'];
-  const result = spawnSync('jina', args, { encoding: 'utf8', env: process.env });
-  if (result.status !== 0) {
-    process.stderr.write(result.stderr || '');
-    throw new Error(`jina embed exited with ${result.status}`);
+async function embed(text) {
+  const response = await fetch(`${BASE_URL.replace(/\/$/, '')}/embeddings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.ARK_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      input: [text],
+      encoding_format: 'float',
+    }),
+  });
+  const body = await response.text();
+  let parsed;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    parsed = null;
   }
-  const parsed = JSON.parse(result.stdout);
-  // CLI's --json shape: { data: [{ embedding: [...] }, ...], model, usage } or { embedding: [...] }
-  const vec =
-    parsed?.data?.[0]?.embedding ??
-    parsed?.embeddings?.[0] ??
-    parsed?.embedding ??
-    (Array.isArray(parsed) ? parsed[0]?.embedding ?? parsed[0] : null);
-  if (!Array.isArray(vec)) {
-    throw new Error(`unexpected jina embed output: ${result.stdout.slice(0, 200)}`);
+  if (!response.ok) {
+    throw new Error(`Ark embeddings API ${response.status}: ${parsed?.error?.message || body.slice(0, 200)}`);
   }
-  return { vector: vec, resolvedModel: parsed?.model ?? MODEL };
+  const rawVector = parsed?.data?.[0]?.embedding;
+  const vector = Array.isArray(rawVector?.[0]) ? rawVector[0] : rawVector;
+  if (!Array.isArray(vector) || vector.some((value) => typeof value !== 'number')) {
+    throw new Error(`unexpected Ark embeddings response shape: ${body.slice(0, 200)}`);
+  }
+  return { vector, resolvedModel: parsed?.model ?? MODEL };
 }
 
-function main() {
-  loadEnvLocal();
-  if (!process.env.JINA_API_KEY) {
-    console.error('error: JINA_API_KEY not set. Put it in .env.local or export it, then rerun.');
+async function main() {
+  if (!process.env.ARK_API_KEY) {
+    console.error('error: ARK_API_KEY not set. Put it in .env.local or export it, then rerun.');
     process.exit(1);
   }
   if (!existsSync(CSV_PATH)) {
@@ -115,7 +127,7 @@ function main() {
   const rows = parseCsv(readFileSync(CSV_PATH, 'utf8'));
   console.log(`csv rows : ${rows.length}`);
   console.log(`model    : ${MODEL}`);
-  console.log(`task     : ${PASSAGE_TASK}`);
+  console.log(`base URL : ${BASE_URL}`);
   console.log();
 
   const records = [];
@@ -130,7 +142,7 @@ function main() {
     step += 1;
     const enPassage = passageText(row.title, row.tech, row.content);
     process.stdout.write(`  [${step.toString().padStart(2)}/${total}] ${row.id.padEnd(24)} en ... `);
-    const { vector: enVec, resolvedModel: m1 } = embed(enPassage);
+    const { vector: enVec, resolvedModel: m1 } = await embed(enPassage);
     resolvedModel = m1;
     dimensions = enVec.length;
     console.log(`ok (${enVec.length}d)`);
@@ -142,7 +154,7 @@ function main() {
     const zhContent = pickZh(row, 'content');
     const zhPassage = passageText(zhTitle, zhTech, zhContent);
     process.stdout.write(`  [${step.toString().padStart(2)}/${total}] ${row.id.padEnd(24)} zh ... `);
-    const { vector: zhVec } = embed(zhPassage);
+    const { vector: zhVec } = await embed(zhPassage);
     console.log(`ok (${zhVec.length}d)`);
 
     records.push({
@@ -167,9 +179,10 @@ function main() {
   }
 
   const index = {
+    provider: 'volcengine',
+    base_url: BASE_URL,
     model: resolvedModel,
     dimensions,
-    task: PASSAGE_TASK,
     generated_at: new Date().toISOString(),
     records,
   };
@@ -179,4 +192,7 @@ function main() {
   console.log(`wrote ${OUT_PATH} (${(bytes / 1024).toFixed(1)} KB, ${records.length} records)`);
 }
 
-main();
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error);
+  process.exit(1);
+});

@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   authors: [{ name: "Xu Junshan 许君山", url: SITE_URL }],
   creator: "Xu Junshan 许君山",
   publisher: "Xu Junshan 许君山",
+  verification: {
+    other: {
+      "baidu-site-verification": "codeva-DSw5IENRfo",
+    },
+  },
   keywords: [
     "许君山",
     "华北水利水电大学 许君山",
@@ -73,8 +78,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/profile.jpg",
-        width: 512,
-        height: 512,
+        width: 1290,
+        height: 1733,
         alt: "Xu Junshan 许君山",
       },
     ],
@@ -107,7 +112,6 @@ export default function RootLayout({
         <Script id="profile-page-schema" type="application/ld+json">
           {JSON.stringify(PROFILE_PAGE_SCHEMA)}
         </Script>
-        <meta name="baidu-site-verification" content="codeva-DSw5IENRfo" />
         <SiteSearch />
         {children}
         <Analytics />

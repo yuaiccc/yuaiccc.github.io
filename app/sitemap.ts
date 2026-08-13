@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts } from '../lib/posts';
-import { SITE_URL } from './site';
+import { SITE_LAST_UPDATED, SITE_URL } from './site';
 
 export const dynamic = 'force-static';
 
@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: SITE_URL,
-      lastModified: new Date(),
+      lastModified: new Date(SITE_LAST_UPDATED),
       changeFrequency: 'weekly',
       priority: 1,
     },
