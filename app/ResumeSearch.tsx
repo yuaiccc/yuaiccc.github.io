@@ -219,6 +219,18 @@ export default function ResumeSearch() {
       }
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
+        // Ark can fail transiently even when the function and index are healthy.
+        // Keep search useful by falling back to the bundled lexical index for
+        // provider/server errors instead of surfacing a raw 5xx to visitors.
+        if (res.status >= 500) {
+          const fallbackResults = await clientSideSearch(q, lang);
+          if (!ctrl.signal.aborted) {
+            setResults(fallbackResults);
+            setStatus('idle');
+            setErrorMsg(null);
+          }
+          return;
+        }
         throw new Error(body?.error || `search failed (${res.status})`);
       }
       const data = (await res.json()) as { results: SearchResult[] };
@@ -232,9 +244,12 @@ export default function ResumeSearch() {
       setStatus('idle');
     } catch (err) {
       if ((err as Error).name === 'AbortError') return;
-      setStatus('error');
-      setErrorMsg((err as Error).message);
-      // keep old results so the dropdown doesn't blank out on a transient error
+      const fallbackResults = await clientSideSearch(q, lang);
+      if (!ctrl.signal.aborted) {
+        setResults(fallbackResults);
+        setStatus('idle');
+        setErrorMsg(null);
+      }
     }
   }, []);
 
