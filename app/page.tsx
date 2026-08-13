@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import FeishuContact from './FeishuContact';
+import GitHubCloneCount from './GitHubCloneCount';
 import LanguageToggle from './LanguageToggle';
 import OpenSourceProjects from './OpenSourceProjects';
 import RepositoryActivity from './RepositoryActivity';
@@ -437,6 +438,7 @@ export default function Resume() {
                       <StarIcon />
                       <span>{hduStarCount === null ? '—' : `${hduStarCount.toLocaleString(zh ? 'zh-CN' : 'en-US')} Star`}</span>
                     </a>
+                    <GitHubCloneCount repository={HDU_REPOSITORY} zh={zh} />
                     <RepositoryActivity repository={HDU_REPOSITORY} zh={zh} />
                   </div>
                 </div>

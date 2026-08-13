@@ -1,0 +1,34 @@
+name: Refresh GitHub traffic snapshot
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Refresh clone metrics
+        run: node scripts/update-github-traffic.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TRAFFIC_REPOSITORY: yuaiccc/HDU-xiaoyuananquantong
+
+      - name: Commit changed snapshot
+        run: |
+          if git diff --quiet -- data/github_traffic.json; then
+            echo "Traffic snapshot unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/github_traffic.json
+          git commit -m "chore: refresh GitHub traffic snapshot"
+          git push
