@@ -140,11 +140,11 @@ const PROJECTS: Project[] = [
     name: 'yuaiccc/cindy',
     href: 'https://github.com/yuaiccc/cindy',
     summary: 'A visible multi-model, multi-harness AI agent workspace for long-running collaboration.',
-    summaryZh: '支持多模型、多 Harness 协同的可视化 AI Agent 工作区：过程可见、可随时插话干预，适合长任务持续协作。',
+    summaryZh: '主导构建支持多模型、多 Harness 协同的可视化 AI Agent 工作区：实现过程可见、随时插话干预，支持长任务持续协作。',
     description:
       'Cindy is an open-source AI agent client built for visible, long-running collaboration. Multiple models and coding harnesses can work together in one task; the full process stays visible, users can intervene mid-task, and completed work remains available instead of disappearing. It supports Claude Code and Codex harnesses across desktop and mobile.',
     descriptionZh:
-      'Cindy 是一个面向长任务协作的开源 AI Agent 客户端：支持多个模型与 Coding Harness 协同，完整工作过程可见，用户可以随时插话干预；任务完成后工作上下文仍保留，适合持续协作。',
+      '主导设计并实现面向长任务协作的开源 AI Agent 客户端：接入多个模型与 Coding Harness，构建可见的任务过程与中途干预机制，并保留已完成任务上下文。',
     showTapTapBrand: true,
     downloadHref: 'https://cindy.app/download/',
     officialHref: 'https://github.com/makecindy/cindy',
