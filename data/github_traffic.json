@@ -5,13 +5,8 @@
   "uniques": 152,
   "cumulative_count": 364,
   "cumulative_since": "2026-08-13T04:36:55.000Z",
-  "counted_through": "2026-08-14T00:00:00Z",
+  "counted_through": "2026-08-15T00:00:00Z",
   "clones": [
-    {
-      "timestamp": "2026-08-01T00:00:00Z",
-      "count": 0,
-      "uniques": 0
-    },
     {
       "timestamp": "2026-08-02T00:00:00Z",
       "count": 0,
@@ -76,7 +71,12 @@
       "timestamp": "2026-08-14T00:00:00Z",
       "count": 6,
       "uniques": 6
+    },
+    {
+      "timestamp": "2026-08-15T00:00:00Z",
+      "count": 0,
+      "uniques": 0
     }
   ],
-  "fetched_at": "2026-08-15T09:41:10.023Z"
+  "fetched_at": "2026-08-16T13:00:51.348Z"
 }
