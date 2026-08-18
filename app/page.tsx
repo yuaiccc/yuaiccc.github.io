@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import OpenCC from 'opencc-js';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FeishuContact from './FeishuContact';
 import GitHubCloneCount from './GitHubCloneCount';
 import LanguageToggle from './LanguageToggle';
 import OpenSourceProjects from './OpenSourceProjects';
 import RepositoryActivity from './RepositoryActivity';
 import ScrollProgress from './ScrollProgress';
+import { fetchRepo } from '@/lib/github';
 import { useResumeLanguage } from './language';
 import { PERSON_SCHEMA, SITE_LAST_UPDATED } from './site';
 import VisitorBadge from './VisitorBadge';
@@ -70,19 +70,15 @@ const useGitHubStarCount = (repository: string) => {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(`https://api.github.com/repos/${repository}`, {
-      headers: { Accept: 'application/vnd.github+json' },
-      signal: controller.signal,
-    })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: { stargazers_count?: unknown } | null) => {
-        if (typeof data?.stargazers_count === 'number') {
-          setStarCount(data.stargazers_count);
-        }
-      })
-      .catch(() => {
-        // A missing badge should not prevent the portfolio from rendering.
-      });
+    // Uses the shared cached/deduped helper in lib/github.ts — this avoids
+    // both the 7-req-per-load storm that could trip the unauthenticated
+    // rate limit and the cache-busting `no-store` that previously forced a
+    // fresh request on every mount.
+    fetchRepo(repository, controller.signal).then((data) => {
+      if (data?.stargazers_count) {
+        setStarCount(data.stargazers_count);
+      }
+    });
 
     return () => controller.abort();
   }, [repository]);
@@ -150,10 +146,14 @@ const TechBadge = ({ name, icon, invertDark }: TechItem) => (
   <li className="group/list-item">
     <span className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 transition-colors duration-200 hover:border-blue-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-blue-800 dark:hover:bg-slate-800/80">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img 
-        src={icon} 
-        alt={name} 
-        className={`w-5 h-5 ${invertDark ? 'dark:invert' : ''}`}
+      <img
+        src={icon}
+        alt={name}
+        width={20}
+        height={20}
+        loading="lazy"
+        decoding="async"
+        className={`h-5 w-5 ${invertDark ? 'dark:invert' : ''}`}
       />
       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{name}</span>
     </span>
@@ -168,6 +168,10 @@ const InlineTech = ({ tech, label }: { tech: keyof typeof INLINE_TECH; label?: s
       <img
         src={item.icon}
         alt=""
+        width={14}
+        height={14}
+        loading="lazy"
+        decoding="async"
         className={`inline-block h-3.5 w-3.5 object-contain ${item.invertDark ? 'dark:invert' : ''}`}
         aria-hidden="true"
       />
@@ -216,8 +220,8 @@ const XIcon = ({ className = 'w-4 h-4' }: IconProps) => (
   </svg>
 );
 
-const LanguageSummary = ({ language }: { language: 'en' | 'zh' | 'zh-TW' }) => {
-  const zh = language !== 'en';
+const LanguageSummary = ({ language }: { language: 'en' | 'zh' }) => {
+  const zh = language === 'zh';
   return (
   <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 text-[11px] text-slate-500 md:justify-start dark:text-slate-400">
     <span>{zh ? '工作语言：' : 'Working languages:'}</span>
@@ -264,26 +268,9 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
 
 export default function Resume() {
   const language = useResumeLanguage();
-  const zh = language !== 'en';
+  const zh = language === 'zh';
   const hduStarCount = useGitHubStarCount(HDU_REPOSITORY);
   const [footerExpanded, setFooterExpanded] = useState(false);
-  const resumeCardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const root = resumeCardRef.current;
-    if (!root || language !== 'zh-TW') return;
-
-    const converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
-    const handler = OpenCC.HTMLConverter(converter, root, 'zh-CN', 'zh-TW');
-    handler.convert();
-    const observer = new MutationObserver(() => handler.convert());
-    observer.observe(root, { characterData: true, childList: true, subtree: true });
-
-    return () => {
-      observer.disconnect();
-      handler.restore();
-    };
-  }, [language]);
 
   return (
     <>
@@ -294,7 +281,6 @@ export default function Resume() {
       <ScrollProgress />
       <div className="min-h-screen bg-slate-50 px-3 py-4 font-sans text-gray-800 transition-colors duration-300 dark:bg-slate-950 dark:text-gray-100 sm:px-6 sm:py-8 lg:px-8">
         <div
-          ref={resumeCardRef}
           lang={language === 'en' ? 'en' : 'zh-CN'}
           className="resume-card relative mx-auto max-w-4xl overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-slate-200 transition-colors duration-300 dark:bg-gray-900 dark:ring-slate-800"
         >

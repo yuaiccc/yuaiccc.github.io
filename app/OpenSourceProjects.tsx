@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { fetchMergedPrCount, fetchRepo } from '@/lib/github';
 import { useResumeLanguage } from './language';
 import RepositoryActivity from './RepositoryActivity';
 
@@ -48,24 +49,11 @@ const useRepositoryStarCounts = () => {
     const controller = new AbortController();
 
     const loadCounts = async () => {
+      // Shared cached/deduped fetch — see lib/github.ts.
       const entries = await Promise.all(
         (Object.entries(PROJECT_REPOSITORIES) as [ProjectId, string][]).map(async ([id, repository]) => {
-          try {
-            const response = await fetch(`https://api.github.com/repos/${repository}`, {
-              cache: 'no-store',
-              headers: { Accept: 'application/vnd.github+json' },
-              signal: controller.signal,
-            });
-
-            if (!response.ok) return [id, null] as const;
-            const result = (await response.json()) as { stargazers_count?: number };
-            return [id, typeof result.stargazers_count === 'number' ? result.stargazers_count : null] as const;
-          } catch (error) {
-            if (!(error instanceof DOMException && error.name === 'AbortError')) {
-              console.warn(`Unable to load star count for ${repository}`, error);
-            }
-            return [id, null] as const;
-          }
+          const result = await fetchRepo(repository, controller.signal);
+          return [id, result?.stargazers_count ?? null] as const;
         }),
       );
 
@@ -96,28 +84,12 @@ const useMergedPullRequestCounts = () => {
     const controller = new AbortController();
 
     const loadCounts = async () => {
+      // Uses the search API helper which carries a longer TTL (30 min) to
+      // stay under GitHub's tighter 10 req/min unauthenticated search limit.
       const entries = await Promise.all(
         (Object.entries(PROJECT_REPOSITORIES) as [ProjectId, string][]).map(async ([id, repository]) => {
-          try {
-            const query = `repo:${repository} type:pr author:yuaiccc is:merged`;
-            const response = await fetch(
-              `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=1`,
-              {
-                cache: 'no-store',
-                headers: { Accept: 'application/vnd.github+json' },
-                signal: controller.signal,
-              },
-            );
-
-            if (!response.ok) return [id, null] as const;
-            const result = (await response.json()) as { total_count?: number };
-            return [id, typeof result.total_count === 'number' ? result.total_count : null] as const;
-          } catch (error) {
-            if (!(error instanceof DOMException && error.name === 'AbortError')) {
-              console.warn(`Unable to load merged PR count for ${repository}`, error);
-            }
-            return [id, null] as const;
-          }
+          const result = await fetchMergedPrCount(repository, 'yuaiccc', controller.signal);
+          return [id, result?.total_count ?? null] as const;
         }),
       );
 

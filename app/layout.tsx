@@ -104,6 +104,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        {/*
+          * Resource hints. Preconnect does DNS+TCP+TLS up front for the two
+          * origins that block first contentful paint (the devicon CDN carries
+          * ~25 tech icons; api.github.com is hit as soon as React hydrates the
+          * star/activity badges). dns-prefetch is a cheap fallback for origins
+          * used by only one or two icons.
+          */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        <link rel="preconnect" href="https://api.github.com" />
+        <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
+        <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
+        <link rel="dns-prefetch" href="https://modelscope.cn" />
+      </head>
       <body className="antialiased">
         <Script id="theme-init" strategy="beforeInteractive">
           {themeInitScript}

@@ -20,6 +20,11 @@ import { resolve } from 'node:path';
 const REPO_ROOT = resolve(new URL('..', import.meta.url).pathname);
 const CSV_PATH = resolve(REPO_ROOT, 'data/resume_knowledge.csv');
 const OUT_PATH = resolve(REPO_ROOT, 'data/resume_index.json');
+// Stripped-down copy for the client-side lexical fallback (static export).
+// The full index carries 2048-d float vectors per record; the browser fallback
+// only uses title/tech/content text, so we emit a separate ~15KB file to keep
+// the dynamic-import chunk out of the megabyte range.
+const CLIENT_OUT_PATH = resolve(REPO_ROOT, 'data/resume_client.json');
 
 function loadEnvLocal() {
   const envFile = resolve(REPO_ROOT, '.env.local');
@@ -178,18 +183,37 @@ async function main() {
     });
   }
 
+  const generatedAt = new Date().toISOString();
   const index = {
     provider: 'volcengine',
     base_url: BASE_URL,
     model: resolvedModel,
     dimensions,
-    generated_at: new Date().toISOString(),
+    generated_at: generatedAt,
     records,
   };
   writeFileSync(OUT_PATH, JSON.stringify(index) + '\n');
+
+  // Lightweight client index — no embeddings, text fields only.
+  const clientIndex = {
+    model: resolvedModel,
+    dimensions,
+    generated_at: generatedAt,
+    records: records.map((r) => ({
+      id: r.id,
+      category: r.category,
+      link: r.link,
+      en: { title: r.en.title, period: r.en.period, tech: r.en.tech, content: r.en.content },
+      zh: { title: r.zh.title, period: r.zh.period, tech: r.zh.tech, content: r.zh.content },
+    })),
+  };
+  writeFileSync(CLIENT_OUT_PATH, JSON.stringify(clientIndex) + '\n');
+
   const bytes = readFileSync(OUT_PATH).byteLength;
+  const clientBytes = readFileSync(CLIENT_OUT_PATH).byteLength;
   console.log();
   console.log(`wrote ${OUT_PATH} (${(bytes / 1024).toFixed(1)} KB, ${records.length} records)`);
+  console.log(`wrote ${CLIENT_OUT_PATH} (${(clientBytes / 1024).toFixed(1)} KB, embeddings stripped)`);
 }
 
 main().catch((error) => {

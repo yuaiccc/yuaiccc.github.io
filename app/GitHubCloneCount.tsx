@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import snapshotFallback from '@/data/github_traffic.json';
+import { GITHUB_RAW_BASE, fetchRawJson } from '@/lib/github';
 
 type CloneSnapshot = {
   repository: string;
@@ -16,7 +17,7 @@ type CloneSnapshot = {
 };
 
 const RAW_SNAPSHOT_URL =
-  'https://raw.githubusercontent.com/yuaiccc/yuaiccc.github.io/main/data/github_traffic.json';
+  `${GITHUB_RAW_BASE}/yuaiccc/yuaiccc.github.io/main/data/github_traffic.json`;
 
 const CloneIcon = () => (
   <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -30,18 +31,16 @@ export default function GitHubCloneCount({ repository, zh }: { repository: strin
 
   useEffect(() => {
     const controller = new AbortController();
-    const url = `${RAW_SNAPSHOT_URL}?t=${Date.now()}`;
 
-    fetch(url, { cache: 'no-store', signal: controller.signal })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: CloneSnapshot | null) => {
-        if (data?.repository === repository && typeof data.uniques === 'number') {
-          setSnapshot(data);
-        }
-      })
-      .catch(() => {
-        // Keep the last committed snapshot when the public raw file is unavailable.
-      });
+    // The previous version appended `?t=${Date.now()}` to bust caches, which
+    // defeated GitHub's ETags and forced a fresh 1.6KB download on every
+    // visit. The shared helper lets the browser use its HTTP cache instead,
+    // and in-memory dedupe covers same-page remounts.
+    fetchRawJson<CloneSnapshot>(RAW_SNAPSHOT_URL, controller.signal).then((data) => {
+      if (data?.repository === repository && typeof data.uniques === 'number') {
+        setSnapshot(data);
+      }
+    });
 
     return () => controller.abort();
   }, [repository]);

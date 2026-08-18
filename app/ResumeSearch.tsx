@@ -134,7 +134,11 @@ let _indexCache: IndexRecord[] | null = null;
 
 async function loadIndex(): Promise<IndexRecord[]> {
   if (_indexCache) return _indexCache;
-  const data = await import('@/data/resume_index.json');
+  // resume_client.json is a build-time stripped copy of resume_index.json with
+  // all embedding vectors removed (~15KB vs ~1MB). The client-side lexical
+  // fallback only needs the text fields, so importing the full vector index
+  // here would waste a megabyte of chunk on a search path that ignores vectors.
+  const data = await import('@/data/resume_client.json');
   _indexCache = (data.default?.records ?? data.records ?? []) as IndexRecord[];
   return _indexCache!;
 }

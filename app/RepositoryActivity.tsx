@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { fetchLatestCommitDate } from '@/lib/github';
 
 const formatRelativeTime = (date: Date, zh: boolean) => {
   const elapsedDays = Math.max(0, Math.floor((Date.now() - date.getTime()) / 86_400_000));
@@ -26,20 +27,14 @@ export default function RepositoryActivity({ repository, zh }: { repository: str
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(`https://api.github.com/repos/${repository}/commits?per_page=1`, {
-      cache: 'no-store',
-      headers: { Accept: 'application/vnd.github+json' },
-      signal: controller.signal,
-    })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((commits: Array<{ commit?: { committer?: { date?: string } } }> | null) => {
-        const dateString = commits?.[0]?.commit?.committer?.date;
-        const date = dateString ? new Date(dateString) : null;
-        setUpdatedAt(date && !Number.isNaN(date.getTime()) ? date : null);
-      })
-      .catch(() => {
-        setUpdatedAt(null);
-      });
+    // Shared in-memory cache + inflight dedupe means 4 instances of this
+    // component on the same page share one network round-trip per unique
+    // repository (and are instant on warm navigations).
+    fetchLatestCommitDate(repository, controller.signal).then((commits) => {
+      const dateString = commits?.[0]?.commit?.committer?.date;
+      const date = dateString ? new Date(dateString) : null;
+      setUpdatedAt(date && !Number.isNaN(date.getTime()) ? date : null);
+    });
 
     return () => controller.abort();
   }, [repository]);

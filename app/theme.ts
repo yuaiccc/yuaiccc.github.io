@@ -8,7 +8,7 @@ export const themeInitScript = `
     let systemLanguage = 'en';
     for (const locale of browserLanguages) {
       if (locale.indexOf('zh') === 0) {
-        systemLanguage = /hant|tw|hk|mo/.test(locale) ? 'zh-TW' : 'zh-CN';
+        systemLanguage = 'zh-CN';
         break;
       }
       if (locale.indexOf('en') === 0) {
@@ -16,7 +16,8 @@ export const themeInitScript = `
         break;
       }
     }
-    const language = storedLanguage === 'zh-TW' ? 'zh-TW' : storedLanguage === 'zh' ? 'zh-CN' : storedLanguage === 'en' ? 'en' : systemLanguage;
+    // Legacy zh-TW is treated as zh-CN.
+    const language = storedLanguage === 'zh' || storedLanguage === 'zh-TW' ? 'zh-CN' : storedLanguage === 'en' ? 'en' : systemLanguage;
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.lang = language;
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
