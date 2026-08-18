@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import FeishuContact from './FeishuContact';
 import GitHubCloneCount from './GitHubCloneCount';
 import LanguageToggle from './LanguageToggle';
+import MiniProgramQr from './MiniProgramQr';
 import OpenSourceProjects from './OpenSourceProjects';
 import RepositoryActivity from './RepositoryActivity';
 import ScrollProgress from './ScrollProgress';
@@ -44,6 +45,8 @@ const INLINE_TECH: Record<string, TechItem> = {
   OKX: { name: 'OKX', icon: '/tech/okx.svg', invertDark: true },
   Spring: { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg' },
   Feishu: { name: 'Feishu', icon: '/feishu-icon.png' },
+  WeChat: { name: 'WeChat Mini Program', icon: 'https://cdn.simpleicons.org/wechat/07C160' },
+  CloudBase: { name: 'Tencent CloudBase', icon: 'https://cdn.simpleicons.org/tencentcloud/006EFF' },
   ByteDance: { name: 'ByteDance', icon: 'https://cdn.simpleicons.org/bytedance/3C8CFF' },
   OceanBase: { name: 'OceanBase', icon: '/oceanbase-icon.png' },
   MySQL: { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg' },
@@ -397,6 +400,47 @@ export default function Resume() {
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">分层记忆与 RAG：</span>设计并搭建短期会话、本地 JSON 长期事实、聊天与图片归档的分层记忆；接入 LightRAG 构建独立的文档图谱/向量检索链路，优化上下文预算控制与隐私脱敏。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Layered memory and RAG:</span> Separated short-term session state, local JSON long-term facts, and chat/image archives; integrated LightRAG for an independent document graph and vector-retrieval path with context-budget controls and privacy redaction.</>}</li>
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">多模态与可见性：</span>接入 Apple Vision、飞书 OCR 与本地视觉模型，实现图片记忆召回和 Agent 阶段可见。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Multimodal and observable:</span> Combined Apple Vision, Feishu OCR, and local vision models for image-memory recall and visible Agent stages.</>}</li>
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">可靠性：</span>负责设计时效与成员校验、后台记忆整理、分阶段延迟日志、健康检查和降级路径；定位外部依赖不可用场景，构建回退到本地能力的恢复机制。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Reliability:</span> Added event-age and membership checks, background memory consolidation, phased latency logs, health checks, and graceful degradation; unavailable LightRAG, CardKit, OCR, or external-agent services fall back to local paths.</>}</li>
+                </ul>
+              </div>
+
+              <div className="group mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
+                    <ProjectIcon />
+                    <span>Sparse{zh ? ' — 两人专属空间微信小程序' : ' — WeChat Mini Program for Couples'}</span>
+                  </h3>
+                  <div className="flex max-w-full flex-wrap items-center gap-2">
+                    <a
+                      href="https://github.com/yuaiccc/couple-space-miniprogram"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500 transition-colors hover:bg-slate-200 hover:text-blue-500 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-blue-400"
+                      aria-label={zh ? '在 GitHub 查看 Sparse' : 'View Sparse on GitHub'}
+                    >
+                      <GithubIcon className="h-3.5 w-3.5" />
+                      <span>yuaiccc/couple-space-miniprogram</span>
+                    </a>
+                    <MiniProgramQr
+                      src="/sparse-qr.jpg"
+                      label="Sparse"
+                      labelEn="Sparse"
+                      hint={zh ? '微信扫码体验' : 'Scan with WeChat to try'}
+                      hintEn="Scan with WeChat to try"
+                    />
+                    <RepositoryActivity repository="yuaiccc/couple-space-miniprogram" zh={zh} />
+                  </div>
+                </div>
+                <p className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-blue-500">
+                  <span className="h-2 w-2 rounded-full bg-blue-500" />
+                  <InlineTech tech="WeChat" />
+                  <span aria-hidden="true">+</span>
+                  <InlineTech tech="CloudBase" />
+                </p>
+                <ul className="ml-5 list-disc list-outside space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">架构与规模：</span>独立设计并实现已上线的原生微信小程序，单个 Node.js 云函数承载 <span className="font-bold text-blue-600 dark:text-blue-400">67 个 action</span>，操作 <span className="font-bold text-blue-600 dark:text-blue-400">14 个 NoSQL 集合</span>，覆盖互动请求、留言、清单、宠物、经期、步数、天气等 15 个页面。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Architecture &amp; scale:</span> Built and shipped a native WeChat Mini Program where one Node.js cloud function serves <span className="font-bold text-blue-600 dark:text-blue-400">67 actions</span> across <span className="font-bold text-blue-600 dark:text-blue-400">14 NoSQL collections</span>, powering 15 pages covering interactions, messages, todos, pets, period tracking, step counts, and weather.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">并发一致性：</span>用乐观锁（<code className="rounded bg-slate-100 px-1 text-xs dark:bg-slate-800">spaceVersion</code>）保护两人空间并发保存，用数据库事务包裹宠物经验与每日上限读改写，用 CAS 条件更新防止清单勾选 lost update，并用原子自增实现访客计数与经验累加。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Concurrency control:</span> Guarded concurrent space saves with an optimistic-lock <code className="rounded bg-slate-100 px-1 text-xs dark:bg-slate-800">spaceVersion</code>, wrapped pet XP and daily-cap read-modify-write in a database transaction, prevented todo-toggle lost updates with compare-and-set writes, and used atomic increments for counters and XP.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">性能与冷启动：</span>拆分首页接口——首次聚合 8 路查询、30 秒轮询只取易变字段；构建多层缓存（天气 30 分钟 LRU、临时文件 URL 90 分钟 LRU、头像 fileID 客户端持久化），并在冷启动时懒加载 264KB 地理数据与二维码库。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Performance &amp; cold start:</span> Split the home feed into a heavy first-load aggregator and a lightweight 30-second poll; layered a 30-min weather LRU, a 90-min temp-URL LRU, and a persistent avatar fileID cache; lazy-loaded 264KB of geo data and the QR library off the cold-start path.</>}</li>
+                  <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">安全与合规：</span>每个 action 服务端基于 OPENID 重新鉴权并校验成员归属；admin 签发临时文件 URL 前先查库确认归属，防止越权读取他人照片；用 CSPRNG 生成 6 位邀请码并加进程内速率限制；文本/图片/语音全量走微信内容安全审核（语音异步），按错误码区分 fail-open 与 fail-closed；坐标降到约 1km，删除走 30 天软删除冷静期。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Security &amp; compliance:</span> Re-authenticated every action server-side via OPENID with membership checks; verified file ownership in the database before issuing admin-signed temporary URLs; generated 6-digit invite codes with CSPRNG plus in-process rate limiting; routed all text/image/audio through WeChat content security (async for voice) with fail-open/fail-closed split by error code; coarsened coordinates to ~1km and used a 30-day soft-delete recovery window.</>}</li>
                 </ul>
               </div>
 
