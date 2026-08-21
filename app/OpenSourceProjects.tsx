@@ -30,7 +30,7 @@ const PROJECT_REPOSITORIES: Record<ProjectId, string> = {
 const CACHED_PROJECT_METRICS: Record<ProjectId, { stars: number; mergedPullRequests: number }> = {
   // Updated when this page is published. These values remain visible when a
   // visitor cannot reach GitHub, then the client refreshes them when it can.
-  cindy: { stars: 1985, mergedPullRequests: 10 },
+  cindy: { stars: 2244, mergedPullRequests: 19 },
 };
 
 const repositoryStarsUrl = (repository: string) => `https://github.com/${repository}/stargazers`;

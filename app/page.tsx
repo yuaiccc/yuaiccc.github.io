@@ -226,7 +226,7 @@ const LanguageSummary = ({ language }: { language: 'en' | 'zh' }) => {
     <span aria-hidden="true">·</span>
     <span>{zh ? '中文（母语）' : 'Mandarin (native)'}</span>
     <span aria-hidden="true">·</span>
-    <span>{zh ? '英语（日常交流、技术阅读）' : 'English (daily communication, technical reading)'}</span>
+    <span>{zh ? '英语（日常交流、技术交流）' : 'English (daily communication, technical discussions)'}</span>
     <span aria-hidden="true">·</span>
     <span>{zh ? '日语（基础交流）' : 'Japanese (basic communication)'}</span>
   </div>
@@ -403,7 +403,7 @@ export default function Resume() {
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
                     <ProjectIcon />
-                    <span>Sparse{zh ? ' — 两人专属空间微信小程序' : ' — WeChat Mini Program for Couples'}</span>
+                    <span>{zh ? 'Sparse — 情侣日常分享小程序' : "Sparse — Couples' Daily Sharing Mini Program"}</span>
                   </h3>
                   <div className="flex max-w-full flex-wrap items-center gap-2">
                     <a
@@ -491,7 +491,7 @@ export default function Resume() {
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
                     <ProjectIcon />
-                    <span>{zh ? '杭电安全教育一键答题助手' : 'HDU One-Click Safety Answer Assistant'}</span>
+                    <span>{zh ? '杭电安全教育一键答题脚本' : 'HDU One-Click Safety Answer Script'}</span>
                   </h3>
                   <div className="flex max-w-full flex-wrap items-center gap-2">
                     <a
@@ -499,7 +499,7 @@ export default function Resume() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500 transition-colors hover:bg-slate-200 hover:text-blue-500 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-blue-400"
-                      aria-label={zh ? '在 GitHub 查看杭电安全教育助手' : 'View HDU Safety Education Assistant on GitHub'}
+                      aria-label={zh ? '在 GitHub 查看杭电安全教育答题脚本' : 'View HDU Safety Education Answer Script on GitHub'}
                     >
                       <GithubIcon className="h-3.5 w-3.5" />
                       <span>{HDU_REPOSITORY}</span>
@@ -509,7 +509,7 @@ export default function Resume() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 rounded-full bg-[#fff8c5] px-2 py-1 text-xs font-medium text-[#9a6700] ring-1 ring-[#d4a72c]/20 transition-colors hover:bg-[#fdf1a9] dark:bg-[#4d3b00]/50 dark:text-[#eac54f] dark:ring-[#eac54f]/20 dark:hover:bg-[#5f4a00]/60"
-                      aria-label={zh ? `杭电安全教育助手 ${hduStarCount ?? '—'} 个 Star` : `HDU Safety Education Assistant has ${hduStarCount ?? '—'} GitHub stars`}
+                      aria-label={zh ? `杭电安全教育答题脚本 ${hduStarCount ?? '—'} 个 Star` : `HDU Safety Education Answer Script has ${hduStarCount ?? '—'} GitHub stars`}
                     >
                       <StarIcon />
                       <span>{hduStarCount === null ? '—' : `${hduStarCount.toLocaleString(zh ? 'zh-CN' : 'en-US')} Star`}</span>
