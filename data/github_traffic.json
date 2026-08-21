@@ -1,17 +1,12 @@
 {
   "repository": "yuaiccc/HDU-xiaoyuananquantong",
   "window_days": 14,
-  "count": 204,
-  "uniques": 85,
-  "cumulative_count": 383,
+  "count": 205,
+  "uniques": 86,
+  "cumulative_count": 385,
   "cumulative_since": "2026-08-13T04:36:55.000Z",
-  "counted_through": "2026-08-19T00:00:00Z",
+  "counted_through": "2026-08-20T00:00:00Z",
   "clones": [
-    {
-      "timestamp": "2026-08-06T00:00:00Z",
-      "count": 1,
-      "uniques": 1
-    },
     {
       "timestamp": "2026-08-07T00:00:00Z",
       "count": 0,
@@ -76,7 +71,12 @@
       "timestamp": "2026-08-19T00:00:00Z",
       "count": 1,
       "uniques": 1
+    },
+    {
+      "timestamp": "2026-08-20T00:00:00Z",
+      "count": 2,
+      "uniques": 2
     }
   ],
-  "fetched_at": "2026-08-20T07:56:41.804Z"
+  "fetched_at": "2026-08-21T09:52:48.563Z"
 }
