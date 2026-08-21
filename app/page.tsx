@@ -257,7 +257,7 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
           </span>
         </div>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          <span className="font-medium">{zh ? '核心课程：' : 'Core coursework:'}</span> {zh ? '操作系统、数据结构、线性代数、自然语言处理、深度学习、计算机网络、软件工程' : 'Operating Systems, Data Structures, Linear Algebra, Natural Language Processing, Deep Learning, Computer Networks, and Software Engineering'}
+          <span className="font-medium">{zh ? '核心课程：' : 'Core coursework:'}</span> {zh ? '计算机操作系统、数据结构、线性代数、自然语言处理、深度学习、计算机网络、软件工程' : 'Computer Operating Systems, Data Structures, Linear Algebra, Natural Language Processing, Deep Learning, Computer Networks, and Software Engineering'}
         </p>
       </div>
     </div>
@@ -310,12 +310,12 @@ export default function Resume() {
                   <LanguageSummary language={language} />
                 </div>
               </div>
-              <div className="w-full rounded-lg border border-blue-200 bg-blue-50/70 p-3.5 text-center shadow-sm ring-1 ring-blue-100/70 sm:w-auto sm:min-w-64 md:text-right dark:border-blue-900/70 dark:bg-blue-950/25 dark:ring-blue-950/50">
+              <div className="w-full rounded-lg border border-blue-200 bg-blue-50/70 p-3.5 text-left shadow-sm ring-1 ring-blue-100/70 sm:w-auto sm:min-w-64 dark:border-blue-900/70 dark:bg-blue-950/25 dark:ring-blue-950/50">
                 <p className="mb-2 text-xs font-semibold tracking-wide text-blue-700 dark:text-blue-300">{zh ? '如何联系我？' : 'How to reach me?'}</p>
                 <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-gray-300">
                 <a
                   href="mailto:yuaiccc@aliyun.com"
-                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
+                  className="inline-flex items-center justify-start gap-2 transition hover:text-slate-900 dark:hover:text-white"
                 >
                   <MailIcon />
                   <span>yuaiccc@aliyun.com</span>
@@ -324,32 +324,32 @@ export default function Resume() {
                   href="https://github.com/yuaiccc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
+                  className="inline-flex items-center justify-start gap-2 transition hover:text-slate-900 dark:hover:text-white"
                 >
                   <GithubIcon />
                   <span>yuaiccc</span>
                 </a>
                 <a
-                  href="https://modelscope.cn/profile/yuaiccc"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
-                  aria-label={zh ? '打开我的 ModelScope 主页' : 'Open my ModelScope profile'}
-                >
-                  <ModelScopeIcon className="h-4 w-4 text-[#1677ff]" />
-                  <span>ModelScope</span>
-                </a>
-                <a
                   href="https://x.com/Hakikeioak"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 transition hover:text-slate-900 md:justify-end dark:hover:text-white"
+                  className="inline-flex items-center justify-start gap-2 transition hover:text-slate-900 dark:hover:text-white"
                 >
                   <XIcon />
                   <span>Hakikeioak</span>
                 </a>
                 <WeChatContact />
                 <FeishuContact />
+                <a
+                  href="https://modelscope.cn/profile/yuaiccc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-start gap-2 transition hover:text-slate-900 dark:hover:text-white"
+                  aria-label={zh ? '打开我的 ModelScope 主页' : 'Open my ModelScope profile'}
+                >
+                  <ModelScopeIcon className="h-4 w-4 text-[#1677ff]" />
+                  <span>ModelScope</span>
+                </a>
                 </div>
               </div>
             </div>
@@ -428,9 +428,9 @@ export default function Resume() {
                 </div>
                 <p className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-blue-500">
                   <span className="h-2 w-2 rounded-full bg-blue-500" />
-                  <InlineTech tech="WeChat" />
+                  <InlineTech tech="WeChat" label={zh ? '微信小程序' : 'WeChat Mini Program'} />
                   <span aria-hidden="true">+</span>
-                  <InlineTech tech="CloudBase" />
+                  <InlineTech tech="CloudBase" label={zh ? '腾讯云 CloudBase' : 'Tencent CloudBase'} />
                 </p>
                 <ul className="ml-5 list-disc list-outside space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li>{zh ? <><span className="font-bold text-slate-800 dark:text-slate-100">架构与规模：</span>独立设计并实现已上线的原生微信小程序，单个 Node.js 云函数承载 <span className="font-bold text-blue-600 dark:text-blue-400">67 个 action</span>，操作 <span className="font-bold text-blue-600 dark:text-blue-400">14 个 NoSQL 集合</span>，覆盖互动请求、留言、清单、宠物、经期、步数、天气等 15 个页面。</> : <><span className="font-bold text-slate-800 dark:text-slate-100">Architecture &amp; scale:</span> Built and shipped a native WeChat Mini Program where one Node.js cloud function serves <span className="font-bold text-blue-600 dark:text-blue-400">67 actions</span> across <span className="font-bold text-blue-600 dark:text-blue-400">14 NoSQL collections</span>, powering 15 pages covering interactions, messages, todos, pets, period tracking, step counts, and weather.</>}</li>
