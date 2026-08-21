@@ -9,6 +9,7 @@ import MiniProgramQr from './MiniProgramQr';
 import OpenSourceProjects from './OpenSourceProjects';
 import RepositoryActivity from './RepositoryActivity';
 import ScrollProgress from './ScrollProgress';
+import WeChatContact from './WeChatContact';
 import { fetchRepo } from '@/lib/github';
 import { useResumeLanguage } from './language';
 import { PERSON_SCHEMA, SITE_LAST_UPDATED } from './site';
@@ -353,6 +354,7 @@ export default function Resume() {
                   <XIcon />
                   <span>Hakikeioak</span>
                 </a>
+                <WeChatContact />
                 <FeishuContact />
                 </div>
               </div>
