@@ -47,7 +47,7 @@ const INLINE_TECH: Record<string, TechItem> = {
   Spring: { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg' },
   Feishu: { name: 'Feishu', icon: '/feishu-icon.png' },
   WeChat: { name: 'WeChat Mini Program', icon: 'https://cdn.simpleicons.org/wechat/07C160' },
-  CloudBase: { name: 'Tencent CloudBase', icon: 'https://cdn.simpleicons.org/tencentcloud/006EFF' },
+  CloudBase: { name: 'Tencent CloudBase', icon: '/tech/cloudbase.svg' },
   ByteDance: { name: 'ByteDance', icon: 'https://cdn.simpleicons.org/bytedance/3C8CFF' },
   OceanBase: { name: 'OceanBase', icon: '/oceanbase-icon.png' },
   MySQL: { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg' },
@@ -61,12 +61,6 @@ const INLINE_TECH: Record<string, TechItem> = {
 
 const HDU_REPOSITORY = 'yuaiccc/HDU-xiaoyuananquantong';
 const HDU_CACHED_STAR_COUNT = 32;
-
-const WAIC_PHOTOS = [
-  { src: '/waic/waic-expo-centre-display.jpg', alt: 'WAIC 2026 上海世博中心会场外景' },
-  { src: '/waic/tencent-selfie-display.jpg', alt: 'WAIC 2026 现场参会记录' },
-  { src: '/waic/waic-entrance-display.jpg', alt: 'WAIC 2026 会场入口与人流' },
-];
 
 const useGitHubStarCount = (repository: string) => {
   const [starCount, setStarCount] = useState<number | null>(HDU_CACHED_STAR_COUNT);
@@ -232,9 +226,9 @@ const LanguageSummary = ({ language }: { language: 'en' | 'zh' }) => {
     <span aria-hidden="true">·</span>
     <span>{zh ? '中文（母语）' : 'Mandarin (native)'}</span>
     <span aria-hidden="true">·</span>
-    <span>{zh ? '英语 CET-6' : 'English CET-6'}</span>
+    <span>{zh ? '英语（日常交流、技术阅读）' : 'English (daily communication, technical reading)'}</span>
     <span aria-hidden="true">·</span>
-    <span>日本語 N3</span>
+    <span>{zh ? '日语（基础交流）' : 'Japanese (basic communication)'}</span>
   </div>
   );
 };
@@ -533,75 +527,6 @@ export default function Resume() {
                   <li>{zh ? <>设计并实现一键安装脚本和本地运行方式，优化服务边界为仅监听本机地址，并补充清晰的使用说明。</> : <>Provides a one-command installer and local runtime with a loopback-only service and clear usage boundaries.</>}</li>
                 </ul>
               </div>
-              </div>
-            </section>
-
-            <section className="animate-fade-in-up delay-200">
-              <h2 className="mb-4 border-l-[3px] border-amber-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '近期活动' : 'Recent Activity'}</h2>
-              <div className="group rounded-lg border border-amber-200/80 bg-amber-50/30 p-4 transition-[border-color,box-shadow] duration-200 hover:border-amber-300 hover:shadow-sm dark:border-amber-900/60 dark:bg-amber-950/10 dark:hover:border-amber-800 sm:p-5">
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <h3 className="min-w-0 flex-1 text-lg font-bold text-slate-900 dark:text-slate-100">
-                    <a
-                      href="https://www.goaihz.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-w-0 flex-wrap items-center gap-2 transition-colors hover:text-amber-700 dark:hover:text-amber-300"
-                      aria-label={zh ? '打开 GOAI 世界人工智能开源大赛官方页面' : 'Open the official GOAI Global Open-source AI Challenge website'}
-                    >
-                      <span className="relative h-6 w-20 shrink-0 overflow-hidden rounded-sm" aria-hidden="true">
-                        <Image src="/goai/goai-logo.png" alt="" fill sizes="80px" className="object-cover" />
-                      </span>
-                      <span>{zh ? 'GOAI AI for Research — 小分子–蛋白质结合轨迹预测' : 'GOAI AI for Research — Protein–Ligand Binding Trajectory Prediction'}</span>
-                    </a>
-                  </h3>
-                  <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-                    {zh ? '竞赛项目 · 进行中' : 'Competition project · In progress'}
-                  </span>
-                </div>
-                <p className="mb-3 flex flex-wrap items-center gap-2 text-sm font-medium text-amber-700 dark:text-amber-300">
-                  <span className="h-2 w-2 rounded-full bg-amber-500" />
-                  {zh ? '生成式 AI × 分子动力学轨迹预测' : 'Generative AI × molecular-dynamics trajectory prediction'}
-                </p>
-              </div>
-
-              <div className="group mt-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <h3 className="min-w-0 flex-1 text-lg font-bold text-slate-900 dark:text-slate-100">
-                    <a
-                      href="https://www.worldaic.com.cn/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-w-0 flex-wrap items-center gap-2 transition-colors hover:text-blue-500 dark:hover:text-blue-300"
-                      aria-label={zh ? '打开世界人工智能大会官方页面' : 'Open the official World Artificial Intelligence Conference website'}
-                    >
-                      <span className="relative h-6 w-9 shrink-0 overflow-hidden rounded-sm" aria-hidden="true">
-                        <Image src="/waic/waic-logo.jpg" alt="" fill sizes="36px" className="object-cover" />
-                      </span>
-                      <span>{zh ? 'WAIC 2026 — 世界人工智能大会' : 'WAIC 2026 — World Artificial Intelligence Conference'}</span>
-                    </a>
-                  </h3>
-                  <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
-                    {zh ? '7月19日 · 上海世博展览馆' : 'July 19 · Shanghai World Expo Exhibition & Convention Center'}
-                  </span>
-                </div>
-                <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3">
-                  {WAIC_PHOTOS.map((photo) => (
-                    <div
-                      key={photo.src}
-                      className="relative aspect-[4/3] select-none overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800"
-                      onContextMenu={(event) => event.preventDefault()}
-                    >
-                      <Image
-                        src={photo.src}
-                        alt={photo.alt}
-                        fill
-                        sizes="(max-width: 640px) 45vw, (max-width: 768px) 30vw, 260px"
-                        className="pointer-events-none object-cover"
-                        draggable={false}
-                      />
-                    </div>
-                  ))}
-                </div>
               </div>
             </section>
 
