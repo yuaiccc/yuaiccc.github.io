@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import FeishuContact from './FeishuContact';
 import GitHubCloneCount from './GitHubCloneCount';
 import LanguageToggle from './LanguageToggle';
-import MiniProgramQr from './MiniProgramQr';
 import OpenSourceProjects from './OpenSourceProjects';
 import RepositoryActivity from './RepositoryActivity';
 import ScrollProgress from './ScrollProgress';
@@ -221,14 +220,8 @@ const XIcon = ({ className = 'w-4 h-4' }: IconProps) => (
 const LanguageSummary = ({ language }: { language: 'en' | 'zh' }) => {
   const zh = language === 'zh';
   return (
-  <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 text-[11px] text-slate-500 md:justify-start dark:text-slate-400">
-    <span>{zh ? '工作语言：' : 'Working languages:'}</span>
-    <span aria-hidden="true">·</span>
-    <span>{zh ? '中文（母语）' : 'Mandarin (native)'}</span>
-    <span aria-hidden="true">·</span>
-    <span>{zh ? '英语（日常交流、技术交流）' : 'English (daily communication, technical discussions)'}</span>
-    <span aria-hidden="true">·</span>
-    <span>{zh ? '日语（基础交流）' : 'Japanese (basic communication)'}</span>
+  <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
+    <span>{zh ? '工作语言：中文（母语）、英语（日常交流、技术交流）、日语（基础交流）' : 'Working languages: Mandarin (native), English (daily and technical communication), Japanese (basic communication)'}</span>
   </div>
   );
 };
@@ -237,7 +230,7 @@ const EducationSection = ({ zh }: { zh: boolean }) => (
   <section className="animate-fade-in-up delay-400">
     <h2 className="mb-4 border-l-[3px] border-blue-500 pl-3 text-xl font-bold text-slate-800 dark:text-slate-100">{zh ? '教育经历' : 'Education'}</h2>
     <div className="divide-y divide-slate-200 dark:divide-slate-700">
-      <div className="px-1 py-3 sm:px-5">
+      <div className="rounded-lg border border-slate-200 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-gray-900 sm:px-5">
         <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-12 w-12 shrink-0 items-center overflow-hidden rounded-full">
@@ -416,12 +409,12 @@ export default function Resume() {
                       <GithubIcon className="h-3.5 w-3.5" />
                       <span>yuaiccc/couple-space-miniprogram</span>
                     </a>
-                    <MiniProgramQr
+                    <Image
                       src="/sparse-qr.jpg"
-                      label="Sparse"
-                      labelEn="Sparse"
-                      hint={zh ? '微信扫码体验' : 'Scan with WeChat to try'}
-                      hintEn="Scan with WeChat to try"
+                      alt={zh ? 'Sparse 微信小程序二维码' : 'Sparse WeChat mini-program QR code'}
+                      width={72}
+                      height={72}
+                      className="h-14 w-14 rounded-md border border-slate-200 bg-white p-1 dark:border-slate-600"
                     />
                     <RepositoryActivity repository="yuaiccc/couple-space-miniprogram" zh={zh} />
                   </div>
@@ -489,9 +482,9 @@ export default function Resume() {
 
               <div className="group order-first mb-4 rounded-lg border border-slate-200 bg-white p-4 transition-[border-color,box-shadow] duration-200 hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-gray-900 dark:hover:border-slate-600 sm:p-5">
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <h3 className="flex min-w-0 flex-1 flex-wrap items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
+                  <h3 className="flex min-w-0 flex-1 items-center gap-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-blue-500 dark:text-slate-100">
                     <ProjectIcon />
-                    <span>{zh ? '杭电安全教育一键答题脚本' : 'HDU One-Click Safety Answer Script'}</span>
+                    <span className="min-w-0 break-words">{zh ? '杭电安全教育一键答题脚本' : 'HDU One-Click Safety Answer Script'}</span>
                   </h3>
                   <div className="flex max-w-full flex-wrap items-center gap-2">
                     <a

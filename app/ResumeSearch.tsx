@@ -25,8 +25,8 @@ const CONTENT_TRUNCATE: Record<'en' | 'zh', number> = { en: 180, zh: 90 };
 
 // ---- Typewriter placeholder ----
 const TYPEWRITER_EXAMPLES: Record<SearchLanguage, string[]> = {
-  en: ['RAG evaluation', 'Go agent', 'memory system', 'LangGraph', 'SwiftUI', 'OCR'],
-  zh: ['RAG 评测', '飞书机器人', '记忆系统', 'LangGraph', '灵动岛', '混合检索'],
+  en: ['RAG evaluation', 'Go agent', 'memory system', 'LangGraph', 'OCR', 'hybrid retrieval'],
+  zh: ['RAG 评测', '飞书机器人', '记忆系统', 'LangGraph', 'OCR', '混合检索'],
 };
 
 function useTypewriter(lang: SearchLanguage, active: boolean): string {
@@ -42,10 +42,18 @@ function useTypewriter(lang: SearchLanguage, active: boolean): string {
     if (!active) return;
 
     const examples = TYPEWRITER_EXAMPLES[lang];
-    const TYPE_SPEED = 90;
-    const DELETE_SPEED = 45;
     const PAUSE_END = 1800;
     const PAUSE_START = 600;
+
+    // Keep the typewriter deliberately non-linear: characters ease into a
+    // phrase, move faster through the middle, then ease out at the edge.
+    const characterDelay = (progress: number, deleting: boolean) => {
+      const clamped = Math.min(Math.max(progress, 0), 1);
+      const middleSpeed = Math.sin(clamped * Math.PI);
+      const base = deleting ? 30 : 38;
+      const range = deleting ? 52 : 70;
+      return Math.round(base + (1 - middleSpeed) * range);
+    };
 
     function tick() {
       const word = examples[st.idx % examples.length];
@@ -57,7 +65,7 @@ function useTypewriter(lang: SearchLanguage, active: boolean): string {
           st.timer = setTimeout(tick, PAUSE_END);
           return;
         }
-        st.timer = setTimeout(tick, TYPE_SPEED);
+        st.timer = setTimeout(tick, characterDelay(st.char / word.length, false));
       } else {
         st.char--;
         setDisplay({ lang, text: word.slice(0, st.char) });
@@ -67,7 +75,7 @@ function useTypewriter(lang: SearchLanguage, active: boolean): string {
           st.timer = setTimeout(tick, PAUSE_START);
           return;
         }
-        st.timer = setTimeout(tick, DELETE_SPEED);
+        st.timer = setTimeout(tick, characterDelay(st.char / word.length, true));
       }
     }
 
@@ -99,16 +107,16 @@ const CATEGORY_LABEL_ZH: Record<string, string> = {
 // UI copy, keyed by language.
 const COPY = {
   en: {
-    placeholder: 'Search my projects and skills…',
-    ariaLabel: 'Search my resume',
+    placeholder: 'Search projects, skills, and experience…',
+    ariaLabel: 'Search resume content',
     searching: 'Searching…',
     searchFailed: 'Search failed.',
     rateLimited: 'Too many searches — give it a few seconds.',
     noMatches: (q: string) => `No matches for “${q}”.`,
   },
   zh: {
-    placeholder: '搜索我的项目和技能…',
-    ariaLabel: '搜索我的简历',
+    placeholder: '搜索项目、技能与经历…',
+    ariaLabel: '搜索简历内容',
     searching: '搜索中…',
     searchFailed: '搜索失败。',
     rateLimited: '搜索太频繁了，请稍等几秒。',

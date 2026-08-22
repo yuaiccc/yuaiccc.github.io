@@ -111,8 +111,8 @@ const PROJECTS: Project[] = [
     id: 'cindy',
     name: 'yuaiccc/cindy',
     href: 'https://github.com/yuaiccc/cindy',
-    summary: 'A visible multi-model, multi-harness AI agent workspace for long-running collaboration.',
-    summaryZh: '主导构建支持多模型、多 Harness 协同的可视化 AI Agent 工作区：实现过程可见、随时插话干预，支持长任务持续协作。',
+    summary: 'Led the architecture for a visible multi-model, multi-harness AI agent workspace; built long-running collaboration, user interruption, and persistent task context.',
+    summaryZh: '主导多模型与多 Harness 协同架构设计；构建可见任务流、用户插话干预与长任务上下文保留；接入 Claude Code、Codex 等 Harness。',
     description:
       'Cindy is an open-source AI agent client built for visible, long-running collaboration. Multiple models and coding harnesses can work together in one task; the full process stays visible, users can intervene mid-task, and completed work remains available instead of disappearing. It supports Claude Code and Codex harnesses across desktop and mobile.',
     descriptionZh:
