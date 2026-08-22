@@ -13,6 +13,8 @@ type Project = {
   href: string;
   summary: string;
   summaryZh: string;
+  summaryPoints?: string[];
+  summaryPointsZh?: string[];
   description: string;
   descriptionZh: string;
   ctaLabel?: string;
@@ -113,6 +115,16 @@ const PROJECTS: Project[] = [
     href: 'https://github.com/yuaiccc/cindy',
     summary: 'Led the architecture for a visible multi-model, multi-harness AI agent workspace; built long-running collaboration, user interruption, and persistent task context.',
     summaryZh: '主导多模型与多 Harness 协同架构设计；构建可见任务流、用户插话干预与长任务上下文保留；接入 Claude Code、Codex 等 Harness。',
+    summaryPoints: [
+      'Led the architecture for collaboration across multiple models and coding harnesses, including Claude Code and Codex.',
+      'Built visible task flows with user interruption and mid-task intervention.',
+      'Designed persistent context for long-running collaboration after a task is completed.',
+    ],
+    summaryPointsZh: [
+      '主导多模型与多 Harness 协同架构设计，接入 Claude Code、Codex 等 Harness。',
+      '构建可见任务流与用户插话干预机制，让协作过程可观察、可中途调整。',
+      '设计长任务上下文保留能力，支持任务完成后继续查看与跟进。',
+    ],
     description:
       'Cindy is an open-source AI agent client built for visible, long-running collaboration. Multiple models and coding harnesses can work together in one task; the full process stays visible, users can intervene mid-task, and completed work remains available instead of disappearing. It supports Claude Code and Codex harnesses across desktop and mobile.',
     descriptionZh:
@@ -319,9 +331,17 @@ export default function OpenSourceProjects() {
               </div>
 
               {!expanded && (
-                <p className="h-10 line-clamp-2 text-sm text-gray-600 dark:text-gray-300 transition-all duration-300">
-                  {zh ? project.summaryZh : project.summary}
-                </p>
+                project.summaryPoints && project.summaryPointsZh ? (
+                  <ul className="ml-5 list-disc space-y-1 text-sm leading-relaxed text-gray-600 dark:text-gray-300 transition-all duration-300">
+                    {(zh ? project.summaryPointsZh : project.summaryPoints).map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="h-10 line-clamp-2 text-sm text-gray-600 dark:text-gray-300 transition-all duration-300">
+                    {zh ? project.summaryZh : project.summary}
+                  </p>
+                )
               )}
             </article>
           );
